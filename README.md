@@ -10,15 +10,16 @@
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
+- **NEW v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
+- **v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
 - **v0.5.5**: NPCs can sit & drink at the same time... generally, prompt updated & ready for SkyrimNet Beta14
 - **v0.5.1.x**: NPCs can now request to trade items with you
 - **v0.5.0**: 5-tier drunk system (Buzzed→Blackout), major performance optimizations, new MCM settings, rebranded to clarify non-official status
 - **Install**: Mod manager → Load after OAR drunk animations → Configure in MCM
-- **Requirements**: Skyrim SE/AE + SkyrimNet + OAR + JContainers + PO3_SKSEFunctions + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
+- **Requirements**: Skyrim SE/AE + SkyrimNet + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
 
 ## Quick Installation
-1. Install requirements (SkyrimNet, OAR, JContainers, PO3_SKSEFunctions)
+1. Install requirements (SkyrimNet, OAR, JContainers, PO3_SKSEFunctions, [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578))
 2. Install iActions with mod manager
 3. Load AFTER OAR drunk animations mod
 4. Configure in MCM menu
@@ -38,10 +39,14 @@
 2. Save → Quit → Disable mod → Load save → Save
 3. Install new version → Enable → Load save
 
+**Upgrading from v0.5.7?** (Safe update)
+1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) first
+2. Update iActions normally — save compatible, no migration needed
+
 ## What It Does
 - **Drunk System**: NPCs drink alcohol → get drunk → sober up automatically (5 levels: Buzzed, Tipsy, Drunk, Plastered, Blackout)
 - **Sleep Sobering**: NPCs lose drunk points while you sleep (configurable rate, default 4 points/hour)
-- **Actions**: Drink alcohol, request alcohol, sober up, extract arrows, stumble
+- **Actions**: Drink alcohol, request food, request alcohol, sober up, extract arrows, stumble
 - **Player Features**: Force push, optional in-game debug notifications
 - **Performance**: Optimized inventory detection, cached alcohol lookups, reduced script lag
 
@@ -49,6 +54,7 @@
 - Alcohol required by default (can be disabled completely or only in inns/taverns)
 - 20-second cooldowns to prevent drink/stumble spam
 - Auto-incremental sobering every 5 minutes (configurable)
+- **v0.6.0**: Receive Food — Followers request food (survival mode focus), Auto-Give toggle, Max Food Items (1-20), Food Preference Order (4 options), Cooldown (1-300s)
 - **v0.5.7**: Sleep Sobering — PointsPerSleepHour (0-100, default: 4). Points drunk NPCs lose per hour of sleep. Set to 0 to disable. Example: 8 hours sleep × 4 points = 32 points lost (~4 drunk tiers)
 - **v0.5.1**: Exchange Items (max types tracked: default 20, tested up to 50; more items = longer processing)
 - **v0.5.0**: Max simultaneous drunk NPCs (8-128, default 32)
