@@ -1,7 +1,7 @@
 ![iActions welcomes you!](images/iActions-banner.png)
 # iActions [Drunk+] for SkyrimNet - Quick Start
 
-## 👉 [**Latest Release v0.5.7 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.5.7)
+## 👉 [**Latest Release v0.6.0 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.0)
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
@@ -39,7 +39,7 @@
 2. Save → Quit → Disable mod → Load save → Save
 3. Install new version → Enable → Load save
 
-**Upgrading from v0.5.7?** (Safe update)
+**Upgrading from v0.5.7?** (Safe update — new dependency required)
 1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) first
 2. Update iActions normally — save compatible, no migration needed
 
