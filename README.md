@@ -1,7 +1,7 @@
 ![iActions welcomes you!](images/iActions-banner.png)
 # iActions [Drunk+] for SkyrimNet - Quick Start
 
-## 👉 [**Latest Release v0.6.0 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.0)
+## 👉 [**Latest Release v0.6.5 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.5)
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
@@ -10,7 +10,8 @@
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
+- **NEW v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name
+- **v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
 - **v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
 - **v0.5.5**: NPCs can sit & drink at the same time... generally, prompt updated & ready for SkyrimNet Beta14
 - **v0.5.1.x**: NPCs can now request to trade items with you
@@ -43,17 +44,23 @@
 1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) first
 2. Update iActions normally — save compatible, no migration needed
 
+**Upgrading from v0.6.0?** (Safe update)
+1. Update iActions normally — save compatible, no new dependencies
+2. Optional: edit `SKSE/Plugins/iActions/extra_alcohol.json` to add custom drinks
+
 ## What It Does
 - **Drunk System**: NPCs drink alcohol → get drunk → sober up automatically (5 levels: Buzzed, Tipsy, Drunk, Plastered, Blackout)
 - **Sleep Sobering**: NPCs lose drunk points while you sleep (configurable rate, default 4 points/hour)
-- **Actions**: Drink alcohol, request food, request alcohol, sober up, extract arrows, stumble
+- **Actions**: Drink alcohol (specific drinks by name!), request food, request alcohol, sober up, extract arrows, stumble
 - **Player Features**: Force push, optional in-game debug notifications
+- **Custom Drinks**: Add mod-added alcohol via `SKSE/Plugins/iActions/extra_alcohol.json`
 - **Performance**: Optimized inventory detection, cached alcohol lookups, reduced script lag
 
 ## Key MCM Settings
 - Alcohol required by default (can be disabled completely or only in inns/taverns)
 - 20-second cooldowns to prevent drink/stumble spam
 - Auto-incremental sobering every 5 minutes (configurable)
+- **v0.6.5**: 26 drinks, custom drinks JSON, specific drink selection, FormID-based detection
 - **v0.6.0**: Receive Food — Followers request food (survival mode focus), Auto-Give toggle, Max Food Items (1-20), Food Preference Order (4 options), Cooldown (1-300s)
 - **v0.5.7**: Sleep Sobering — PointsPerSleepHour (0-100, default: 4). Points drunk NPCs lose per hour of sleep. Set to 0 to disable. Example: 8 hours sleep × 4 points = 32 points lost (~4 drunk tiers)
 - **v0.5.1**: Exchange Items (max types tracked: default 20, tested up to 50; more items = longer processing)
