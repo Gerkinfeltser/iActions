@@ -10,7 +10,7 @@
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name
+- **NEW v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
 - **v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
 - **v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
 - **v0.5.5**: NPCs can sit & drink at the same time... generally, prompt updated & ready for SkyrimNet Beta14
@@ -54,6 +54,8 @@
 - **Actions**: Drink alcohol (specific drinks by name!), request food, request alcohol, sober up, extract arrows, stumble
 - **Player Features**: Force push, optional in-game debug notifications
 - **Custom Drinks**: Add mod-added alcohol via `SKSE/Plugins/iActions/extra_alcohol.json`
+- **Smart Inventory**: SKSE decorator `iActions_get_npc_alcohol` checks NPC's actual alcohol stock instantly
+- **Smart Spawning**: Free-drinks mode spawns the specific drink the NPC asked for (not random)
 - **Performance**: Optimized inventory detection, cached alcohol lookups, reduced script lag
 
 ## Key MCM Settings
