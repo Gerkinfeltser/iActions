@@ -1,7 +1,7 @@
 ![iActions welcomes you!](images/iActions-banner.png)
 # iActions [Drunk+] for SkyrimNet - Quick Start
 
-## 👉 [**Latest Release v0.6.5 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.5)
+## 👉 [**Latest Release v0.6.6 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6)
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
@@ -10,6 +10,7 @@
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
+- **NEW v0.6.6**: Requires SkyrimNet Beta 25; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, groups related actions under Food and Drink / Health and Recovery, and prevents `exchange_items` from being suggested for merchant transactions
 - **NEW v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
 - **v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
 - **v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
@@ -17,15 +18,17 @@
 - **v0.5.1.x**: NPCs can now request to trade items with you
 - **v0.5.0**: 5-tier drunk system (Buzzed→Blackout), major performance optimizations, new MCM settings, rebranded to clarify non-official status
 - **Install**: Mod manager → Load after OAR drunk animations → Configure in MCM
-- **Requirements**: Skyrim SE/AE + SkyrimNet + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
+- **Requirements**: Skyrim SE/AE + **SkyrimNet Beta 25 or newer** + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
 
 ## Quick Installation
-1. Install requirements (SkyrimNet, OAR, JContainers, PO3_SKSEFunctions, [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578))
+1. Install requirements (SkyrimNet Beta 25 or newer, OAR, JContainers, PO3_SKSEFunctions, [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578))
 2. Install iActions with mod manager
 3. Load AFTER OAR drunk animations mod
 4. Configure in MCM menu
 
 ### Upgrading?
+
+> **SkyrimNet Beta 25 / iActions v0.6.6 content migration:** The external bundle now uses plugin id `phospheneoverdrive.iactions`, and all action names use snake_case. Review plugin enablement, priority, Hub association, and overlay relationships after upgrading; reapply any per-action enablement or cooldown settings that were stored under the old names. The wake-up event is no longer included in iActions and is distributed by a separate plugin.
 1. Run iActions MCM's "Prepare for Uninstall"
 2. Save game & exit Skyrim completely
 3. In mod manager, disable iActions mod entry
