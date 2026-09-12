@@ -1,15 +1,17 @@
 ![iActions welcomes you!](images/iActions-banner.png)
 # iActions [Drunk+] for SkyrimNet - Quick Start
 
-## 👉 [**Latest Release v0.6.5 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.5)
+## 👉 [**Latest Release v0.6.6 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6)
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
-> 🚨 **Upgrading requires clean migration:** [See upgrade notes below](#quick-installation)  
+> **SkyrimNet Beta 25 or newer is REQUIRED for iActions v0.6.6; earlier SkyrimNet versions are not supported.**
+> **Upgrading from iActions v0.6.5 is save-compatible and does not require a clean install.** [See upgrade notes below](#upgrading)
 > (For overly-detailed documentation on all the things, see the [iActions Wiki](https://github.com/Gerkinfeltser/iActions/wiki).)
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
+- **NEW v0.6.6**: **REQUIRES SkyrimNet Beta 25 or newer**; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, groups related actions under Food and Drink / Health and Recovery, and prevents `exchange_items` from being suggested for merchant transactions
 - **NEW v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
 - **v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
 - **v0.5.7**: Sleep Sobering — Drunk NPCs gradually sober up while you sleep (configurable PointsPerSleepHour, default: 4)
@@ -17,36 +19,55 @@
 - **v0.5.1.x**: NPCs can now request to trade items with you
 - **v0.5.0**: 5-tier drunk system (Buzzed→Blackout), major performance optimizations, new MCM settings, rebranded to clarify non-official status
 - **Install**: Mod manager → Load after OAR drunk animations → Configure in MCM
-- **Requirements**: Skyrim SE/AE + SkyrimNet + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
+- **Requirements**: Skyrim SE/AE + **SkyrimNet Beta 25 or newer (REQUIRED; earlier versions unsupported)** + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
 
 ## Quick Installation
-1. Install requirements (SkyrimNet, OAR, JContainers, PO3_SKSEFunctions, [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578))
+1. Install requirements (**SkyrimNet Beta 25 or newer is required**, plus OAR, JContainers, PO3_SKSEFunctions, and [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578))
 2. Install iActions with mod manager
 3. Load AFTER OAR drunk animations mod
 4. Configure in MCM menu
 
-### Upgrading?
+### Upgrading
+
+> **iActions v0.6.6 requires SkyrimNet Beta 25 or newer.** Install or update SkyrimNet before launching the game.
+
+#### From v0.6.5 to v0.6.6 (Safe update)
+
+1. Install or update to **SkyrimNet Beta 25 or newer**
+2. Update iActions normally — **no clean install or uninstall preparation is required**
+3. Review SkyrimNet plugin enablement, priority, Hub association, and overlay relationships after upgrading
+4. Reapply any per-action settings stored under the old action names
+
+The external bundle now uses plugin id `phospheneoverdrive.iactions`, and all action names use snake_case. The wake-up event is no longer included in iActions and is distributed by a separate plugin.
+
+#### From v0.4.x (Clean migration required)
+
+The v0.5.0 ESL conversion requires a clean migration from v0.4.x:
+
 1. Run iActions MCM's "Prepare for Uninstall"
-2. Save game & exit Skyrim completely
-3. In mod manager, disable iActions mod entry
-4. *Without iActions enabled:* Restart Skyrim & load save from step 2
-5. Save game & exit Skyrim completely (again)
-6. Enable new iActions version in mod manager
-7.  Restart Skyrim & load save from step 5
-(Use `setstage SKI_ConfigManagerInstance 1` if MCM doesn't appear after some time)
+2. Save game and exit Skyrim completely
+3. Disable iActions in the mod manager
+4. Without iActions enabled, load the save, save again, and exit
+5. Enable the new iActions version and load that save
 
-**Upgrading from v0.3.0?** (No MCM uninstall)
-1. Use SkyrimNet WebUI: Run `WebUI_PrepareForUninstall()` on `iActions_MCM` script
-2. Save → Quit → Disable mod → Load save → Save
-3. Install new version → Enable → Load save
+Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some time.
 
-**Upgrading from v0.5.7?** (Safe update — new dependency required)
-1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) first
-2. Update iActions normally — save compatible, no migration needed
+#### From v0.3.0 (No MCM uninstall)
 
-**Upgrading from v0.6.0?** (Safe update)
-1. Update iActions normally — save compatible, no new dependencies
-2. Optional: edit `SKSE/Plugins/iActions/extra_alcohol.json` to add custom drinks
+1. Use SkyrimNet WebUI to run `WebUI_PrepareForUninstall()` on the `iActions_MCM` script
+2. Save, quit, disable the mod, load the save, save, and quit again
+3. Install and enable the new version, then load the save
+
+#### From v0.5.7 to v0.6.6 (Safe update)
+
+1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) and **SkyrimNet Beta 25 or newer** first
+2. Update iActions normally — save compatible, no clean migration needed
+
+#### From v0.6.0 to v0.6.6 (Safe update)
+
+1. Install or update to **SkyrimNet Beta 25 or newer**
+2. Update iActions normally — save compatible, no clean migration needed
+3. Optional: edit `SKSE/Plugins/iActions/extra_alcohol.json` to add custom drinks
 
 ## What It Does
 - **Drunk System**: NPCs drink alcohol → get drunk → sober up automatically (5 levels: Buzzed, Tipsy, Drunk, Plastered, Blackout)
