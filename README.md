@@ -2,6 +2,7 @@
 # iActions [Drunk+] for SkyrimNet - Quick Start
 
 ## 👉 [**Latest Release v0.6.6 here!!!**](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6)
+*(Hey, btw: The SkyrimNet plugin hub lists this version of iActions as v0.6.7 but, fear not! It's exactly the same as this version! Sorry for the numbering confusion! I've learned my lesson!)*
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
