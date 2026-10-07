@@ -11,17 +11,13 @@
 
 ## v0.6.7 compatibility candidate (unreleased)
 
-Targets one native DLL for Skyrim **1.5.97.0, 1.6.640.0, 1.6.1170.0, 1.7.99.0 and 1.7.104.0**, using pinned MIT MinLL/CommonLibVR v4.39.5 with a shared SE/AE virtual-layout correction. VR and unnamed patches are not in scope. These are compatibility targets, not five passing game tests.
+This release candidate adds compatibility work for Skyrim **1.5.97, 1.6.640, 1.6.1170, 1.7.99 and 1.7.104**. Support for these versions is still being evaluated; **Skyrim VR is not supported**.
 
-Requires matching SKSE, Address Library and SkyrimNet builds plus the existing full-mod dependencies. No gameplay/save-format changes are intended; use a separate test profile and preserve save/co-save rollback copies. A DLL-only override is not a complete mod upgrade.
+Drinking, food requests, arrow extraction and sobering are now individual actions rather than grouped under Food and Drink / Health and Recovery. Drinking behavior and save formats are unchanged.
 
-The bundle/native candidate version is 0.6.7; no new GitHub or Plugin Hub release is implied. The historical Hub 0.6.7 label referred to mod 0.6.6. Build and per-runtime evidence are maintained in the development repository's `_docs/DEVNOTES.md`.
+Use the SKSE and Address Library versions matching your Skyrim executable, alongside a compatible SkyrimNet build and the dependencies listed below.
 
-RC2 removes `customCategory` from `drink_alcohol`, `receive_food`, `have_arrows_extracted` and `sobers_up`, and removes the `food_and_drink` / `health_and_recovery` category definitions. These actions are now standalone candidates, subject to their existing eligibility checks. Native/Papyrus gameplay and save formats are unchanged.
-
-When upgrading from a categorized build, replace the old iActions mod folder rather than merging files: deleted category YAMLs must not remain in the winning MO2 content. Disable the previous iActions copy and any competing development override.
-
-**ADT test, 2026-10-07:** The user confirmed drinking worked. The archived session shows `drink_alcohol` directly exposed, selected and dispatched for Brenuin, followed by fallback from unavailable Nord Mead to player-provided Ale and the completed “now buzzed (0 left)” transition. A second drink started, but its completion was outside the capture. This verifies one drinking/intoxication path, not the complete runtime matrix: sobering, save/reload, native inventory payload correctness and exact loaded executable/DLL identity remain unverified.
+**Upgrading:** Replace the previous iActions mod folder rather than merging files, so the removed category files do not remain installed. Enable only one iActions copy. Back up your save and co-save, and try the candidate on a separate save first.
 
 
 ## TL;DR
