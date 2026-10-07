@@ -17,9 +17,11 @@ Requires matching SKSE, Address Library and SkyrimNet builds plus the existing f
 
 The bundle/native candidate version is 0.6.7; no new GitHub or Plugin Hub release is implied. The historical Hub 0.6.7 label referred to mod 0.6.6. Build and per-runtime evidence are maintained in the development repository's `_docs/DEVNOTES.md`.
 
-RC2 removes `customCategory` from `drink_alcohol`, `receive_food`, `have_arrows_extracted` and `sobers_up`, and removes the `food_and_drink` / `health_and_recovery` category definitions. These actions are now standalone candidates, subject to their existing eligibility checks; selection/execution still requires in-game verification. Native/Papyrus gameplay and save formats are unchanged.
+RC2 removes `customCategory` from `drink_alcohol`, `receive_food`, `have_arrows_extracted` and `sobers_up`, and removes the `food_and_drink` / `health_and_recovery` category definitions. These actions are now standalone candidates, subject to their existing eligibility checks. Native/Papyrus gameplay and save formats are unchanged.
 
 When upgrading from a categorized build, replace the old iActions mod folder rather than merging files: deleted category YAMLs must not remain in the winning MO2 content. Disable the previous iActions copy and any competing development override.
+
+**ADT test, 2026-10-07:** The user confirmed drinking worked. The archived session shows `drink_alcohol` directly exposed, selected and dispatched for Brenuin, followed by fallback from unavailable Nord Mead to player-provided Ale and the completed “now buzzed (0 left)” transition. A second drink started, but its completion was outside the capture. This verifies one drinking/intoxication path, not the complete runtime matrix: sobering, save/reload, native inventory payload correctness and exact loaded executable/DLL identity remain unverified.
 
 
 ## TL;DR
