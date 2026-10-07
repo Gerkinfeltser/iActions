@@ -9,6 +9,19 @@
 > **Upgrading from iActions v0.6.5 is save-compatible and does not require a clean install.** [See upgrade notes below](#upgrading)
 > (For overly-detailed documentation on all the things, see the [iActions Wiki](https://github.com/Gerkinfeltser/iActions/wiki).)
 
+## v0.6.7 compatibility candidate (unreleased)
+
+Targets one native DLL for Skyrim **1.5.97.0, 1.6.640.0, 1.6.1170.0, 1.7.99.0 and 1.7.104.0**, using pinned MIT MinLL/CommonLibVR v4.39.5 with a shared SE/AE virtual-layout correction. VR and unnamed patches are not in scope. These are compatibility targets, not five passing game tests.
+
+Requires matching SKSE, Address Library and SkyrimNet builds plus the existing full-mod dependencies. No gameplay/save-format changes are intended; use a separate test profile and preserve save/co-save rollback copies. A DLL-only override is not a complete mod upgrade.
+
+The bundle/native candidate version is 0.6.7; no new GitHub or Plugin Hub release is implied. The historical Hub 0.6.7 label referred to mod 0.6.6. Build and per-runtime evidence are maintained in the development repository's `_docs/DEVNOTES.md`.
+
+RC2 removes `customCategory` from `drink_alcohol`, `receive_food`, `have_arrows_extracted` and `sobers_up`, and removes the `food_and_drink` / `health_and_recovery` category definitions. These actions are now standalone candidates, subject to their existing eligibility checks; selection/execution still requires in-game verification. Native/Papyrus gameplay and save formats are unchanged.
+
+When upgrading from a categorized build, replace the old iActions mod folder rather than merging files: deleted category YAMLs must not remain in the winning MO2 content. Disable the previous iActions copy and any competing development override.
+
+
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
 - **NEW v0.6.6**: **REQUIRES SkyrimNet Beta 25 or newer**; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, groups related actions under Food and Drink / Health and Recovery, and prevents `exchange_items` from being suggested for merchant transactions
