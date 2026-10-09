@@ -1,4 +1,4 @@
-![iActions welcomes you!](images/iActions-banner.png)
+![iActions welcomes you!](https://raw.githubusercontent.com/Gerkinfeltser/iActions/master/images/iActions-banner.png)
 # iActions v0.6.7 (release candidate) for SkyrimNet — Quick Start
 
 **Unreleased candidate:** This README describes v0.6.7. [Latest published release: v0.6.6](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6).
