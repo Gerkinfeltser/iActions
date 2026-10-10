@@ -1,7 +1,7 @@
 ![iActions welcomes you!](https://raw.githubusercontent.com/Gerkinfeltser/iActions/master/images/iActions-banner.png)
-# iActions v0.6.7 (release candidate) for SkyrimNet — Quick Start
+# iActions v0.6.7 for SkyrimNet — Quick Start
 
-**Unreleased candidate:** This README describes v0.6.7. [Latest published release: v0.6.6](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6).
+This README describes **v0.6.7**. [Previous release: v0.6.6](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.6).
 
 > ## ⚠️ **Warning: Experimental**
 > Test on separate/non-precious saves first if you're risk-averse!  
@@ -11,7 +11,7 @@
 
 ## What changes in v0.6.7
 
-This release candidate adds compatibility work for Skyrim **1.5.97, 1.6.640, 1.6.1170, 1.7.99 and 1.7.104**. Support for these versions is still being evaluated; **Skyrim VR is not supported**.
+Version 0.6.7 adds compatibility work for Skyrim **1.5.97, 1.6.640, 1.6.1170, 1.7.99 and 1.7.104**. Support for these versions is still being evaluated; **Skyrim VR is not supported**.
 
 Drinking, food requests, arrow extraction and sobering are now individual actions rather than grouped under Food and Drink / Health and Recovery. Drinking behavior and save formats are unchanged.
 
@@ -26,12 +26,12 @@ Papyrus MessageBox has not yet been rebuilt for 1.7.x, so **dialog-based drink a
 
 These settings allow automatic transfers from your inventory without asking you to choose or decline. Keep them enabled, including after an MCM reset. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. Do not rely on the **Auto Give**, **Always Auto Give**, **Give (Choose)** or **Nope** dialogs on 1.7.x until a compatible MessageBox build is available. Use this workaround instead of installing an incompatible MessageBox DLL; other dependencies must still match your runtime. This is a temporary limitation, not full runtime certification.
 
-**Upgrading:** Replace the previous iActions mod folder rather than merging files, so the removed category files do not remain installed. Enable only one iActions copy. Back up your save and co-save, and try the candidate on a separate save first.
+**Upgrading:** Replace the previous iActions mod folder rather than merging files, so the removed category files do not remain installed. Enable only one iActions copy. Back up your save and co-save, and try the update on a separate save first.
 
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.6.7 candidate**: Compatibility work for Skyrim 1.5.97, 1.6.640, 1.6.1170, 1.7.99 and 1.7.104 (evaluation ongoing; no VR); drinking, food requests, arrow extraction and sobering are standalone actions, with the old category definitions removed
+- **NEW v0.6.7**: Compatibility work for Skyrim 1.5.97, 1.6.640, 1.6.1170, 1.7.99 and 1.7.104 (evaluation ongoing; no VR); drinking, food requests, arrow extraction and sobering are standalone actions, with the old category definitions removed
 - **v0.6.6**: Requires SkyrimNet Beta 25 or newer; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, and prevents `exchange_items` from being suggested for merchant transactions
 - **v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
 - **v0.6.0**: Receive Food — Followers request food via dynamic dialog, configurable tier priority and auto-give
@@ -44,7 +44,7 @@ These settings allow automatic transfers from your inventory without asking you 
 
 ## Quick Installation
 1. Install SKSE and Address Library matching your Skyrim executable, a compatible SkyrimNet build (**Beta 25 or newer**), OAR, JContainers and PO3_SKSEFunctions. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) for choice dialogs only on runtimes it supports; on 1.7.x, follow the workaround above.
-2. Install the v0.6.7 candidate ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
+2. Install the v0.6.7 ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. Load AFTER OAR drunk animations mod
 4. Configure in MCM menu
 
@@ -55,7 +55,7 @@ These settings allow automatic transfers from your inventory without asking you 
 #### From v0.6.5 or v0.6.6 to v0.6.7
 
 1. Install or update to **SkyrimNet Beta 25 or newer**
-2. Replace the previous iActions mod folder with the candidate; do not merge files. This removes the obsolete Food and Drink / Health and Recovery category definitions. No MCM uninstall preparation or clean-save migration is required.
+2. Replace the previous iActions mod folder with v0.6.7; do not merge files. This removes the obsolete Food and Drink / Health and Recovery category definitions. No MCM uninstall preparation or clean-save migration is required.
 3. Review SkyrimNet plugin enablement, priority, Hub association, and overlay relationships after upgrading
 4. Reapply any per-action settings stored under the old action names
 
