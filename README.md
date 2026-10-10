@@ -17,6 +17,15 @@ Drinking, food requests, arrow extraction and sobering are now individual action
 
 Use the SKSE and Address Library versions matching your Skyrim executable, alongside a compatible SkyrimNet build and the dependencies listed below.
 
+### Temporary Skyrim 1.7.x workaround
+
+Papyrus MessageBox has not yet been rebuilt for 1.7.x, so **dialog-based drink and food requests are unavailable**. To use those actions without their choice dialogs, configure the iActions MCM before requesting them:
+
+- **Drunk Behavior → Auto-Take Alcohol: ON** for drinks taken from your inventory. If the toggle is greyed out, enable **Require Alcohol in Inventory** first.
+- **Configuration → Auto-Give Food: ON** for food requests. **Auto-Give Max Food Items** controls the transfer limit.
+
+These settings allow automatic transfers from your inventory without asking you to choose or decline. Keep them enabled, including after an MCM reset. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. Do not rely on the **Auto Give**, **Always Auto Give**, **Give (Choose)** or **Nope** dialogs on 1.7.x until a compatible MessageBox build is available. Use this workaround instead of installing an incompatible MessageBox DLL; other dependencies must still match your runtime. This is a temporary limitation, not full runtime certification.
+
 **Upgrading:** Replace the previous iActions mod folder rather than merging files, so the removed category files do not remain installed. Enable only one iActions copy. Back up your save and co-save, and try the candidate on a separate save first.
 
 
@@ -31,10 +40,10 @@ Use the SKSE and Address Library versions matching your Skyrim executable, along
 - **v0.5.1.x**: NPCs can now request to trade items with you
 - **v0.5.0**: 5-tier drunk system (Buzzed→Blackout), major performance optimizations, new MCM settings, rebranded to clarify non-official status
 - **Install**: Mod manager → Load after OAR drunk animations → Configure in MCM
-- **Requirements**: Skyrim SE/AE + **SkyrimNet Beta 25 or newer (REQUIRED; earlier versions unsupported)** + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
+- **Requirements**: Skyrim SE/AE + **SkyrimNet Beta 25 or newer (REQUIRED; earlier versions unsupported)** + OAR + JContainers + PO3_SKSEFunctions + [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) for choice dialogs (1.7.x: use the auto-give workaround above) + [drunk animations](https://www.nexusmods.com/skyrimspecialedition/mods/62191) (optional)
 
 ## Quick Installation
-1. Install SKSE and Address Library matching your Skyrim executable, a compatible SkyrimNet build (**Beta 25 or newer**), OAR, JContainers, PO3_SKSEFunctions, and [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578)
+1. Install SKSE and Address Library matching your Skyrim executable, a compatible SkyrimNet build (**Beta 25 or newer**), OAR, JContainers and PO3_SKSEFunctions. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) for choice dialogs only on runtimes it supports; on 1.7.x, follow the workaround above.
 2. Install the v0.6.7 candidate ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. Load AFTER OAR drunk animations mod
 4. Configure in MCM menu
@@ -72,7 +81,7 @@ Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some
 
 #### From v0.5.7 to v0.6.7
 
-1. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) and **SkyrimNet Beta 25 or newer** first
+1. Install **SkyrimNet Beta 25 or newer** first. Install [Papyrus MessageBox](https://www.nexusmods.com/skyrimspecialedition/mods/83578) for choice dialogs only on supported runtimes; on 1.7.x use the auto-give workaround above.
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed
 
 #### From v0.6.0 to v0.6.7
