@@ -1,31 +1,31 @@
 ![iActions welcomes you!](https://raw.githubusercontent.com/Gerkinfeltser/iActions/master/images/iActions-banner.png)
 # iActions v0.6.8 candidate for SkyrimNet — Quick Start
 
-**Current candidate: v0.6.8.** This is an experimental, not-yet-runtime-accepted candidate; the rebuilt DLL still needs owner retesting. Get the candidate from [iActions on Nexus Mods]([IACTIONS_NEXUS_URL]) and SkyrimNet from [SkyrimNet on Nexus Mods]([SKYRIMNET_NEXUS_URL]). GitHub remains the source/history for the project, but its files and releases are not assumed to be current downloads. Previous release history: [v0.6.7 on GitHub](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.7).
+**Current candidate: v0.6.8.** Owner-tested 2026-11-09: the 0.6.8 DLL loaded and its tested drinking behavior worked on Skyrim 1.6.1170, 1.7.104 and Skyrim VR 1.4.15; see runtime details below. Get the candidate from [iActions on Nexus Mods]([IACTIONS_NEXUS_URL]) and SkyrimNet from [SkyrimNet on Nexus Mods]([SKYRIMNET_NEXUS_URL]). GitHub remains the source/history for the project, but its files and releases are not assumed to be current downloads. Previous release history: [v0.6.7 on GitHub](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.7).
 
 > **SkyrimNet Beta 25 or newer is REQUIRED**; earlier versions are unsupported. Test on a separate/non-precious save first if you're risk-averse. Upgrading from v0.6.7 does not require a clean-save migration: replace the old mod folder; do not merge files. [Upgrade notes](#upgrading).
 > (For detailed documentation, see the [iActions Wiki](https://github.com/Gerkinfeltser/iActions/wiki).)
 
 ## What changes in v0.6.8
 
-Version 0.6.8 adds Skyrim VR support. A single native DLL supports Skyrim SE/AE and VR. Owner-reported tests for the preceding 0.6.7-numbered VR-capable DLL cover Skyrim 1.6.1170, 1.7.104 and Skyrim VR 1.4.15; the rebuilt 0.6.8 DLL needs retesting. Skyrim 1.5.97, 1.6.640 and 1.7.99 are untested, but expected to work via Address Library.
+Version 0.6.8 adds Skyrim VR support. A single native DLL supports Skyrim SE/AE and VR. Owner-tested on 2026-11-09 (SKSE reported iActions 00060080): Skyrim 1.6.1170 (ADT) loaded; NPC alcohol detection worked; full drink where the NPC asked the player; animation played. Skyrim 1.7.104 loaded; detection worked; full drink from the NPC's own inventory. The ask-the-player dialog was not tested on 1.7.x. Skyrim VR 1.4.15 (FUS) loaded; detection worked; ask-the-player choice dialog displayed and worked; ale transferred; NPC became Buzzed (seated run); standing IdleDrink animation was reported working. The normal Papyrus MessageBox Nexus 83578 v1.0.0 file loaded on VR and its dialog worked. Skyrim 1.5.97, 1.6.640 and 1.7.99 remain untested, expected via Address Library.
 
 This candidate changes no gameplay or save behavior. Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable, alongside a compatible SkyrimNet build and the required dependencies below.
 
-### Papyrus MessageBox workaround
+### Papyrus MessageBox workaround (Skyrim 1.7.x only)
 
-Papyrus MessageBox is unavailable on Skyrim 1.7.x and Skyrim VR, so dialog-based drink and food requests are unavailable there. To use those actions without their choice dialogs, configure the iActions MCM before requesting them:
+Papyrus MessageBox is unavailable on Skyrim 1.7.x. To use player-supplied drinking or food requests there, configure the iActions MCM:
 
 - **Drunk Behavior → Auto-Take Alcohol: ON** for drinks taken from your inventory. If the toggle is greyed out, enable **Require Alcohol in Inventory** first.
 - **Configuration → Auto-Give Food: ON** for food requests. **Auto-Give Max Food Items** controls the transfer limit.
 
-These settings allow automatic transfers from your inventory without asking you to choose or decline. Keep them enabled, including after an MCM reset. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. Do not rely on the **Auto Give**, **Always Auto Give**, **Give (Choose)** or **Nope** dialogs on 1.7.x or VR; use this workaround instead of installing an incompatible MessageBox DLL. This workaround does not certify the full runtime or other dependencies.
+These settings allow automatic transfers without asking you to choose or decline. Keep them enabled, including after an MCM reset. On VR, use this workaround only if you prefer no dialogs. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. This workaround does not certify the full runtime or other dependencies.
 
 **Upgrading:** Replace the previous iActions mod folder rather than merging files. No clean-save migration is required from v0.6.7. Enable only one iActions copy.
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.6.8 candidate**: Skyrim VR support; one native DLL for SE/AE and VR. Prior-DLL owner reports and untested runtimes are detailed above; rebuilt candidate needs retesting.
+- **NEW v0.6.8**: Skyrim VR support; owner-tested DLL on Skyrim 1.6.1170, 1.7.104 and Skyrim VR 1.4.15. Runtime behavior and untested versions are detailed above.
 - **v0.6.7**: Drinking, food requests, arrow extraction and sobering became standalone actions, with the old category definitions removed
 - **v0.6.6**: Requires SkyrimNet Beta 25 or newer; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, and prevents `exchange_items` from being suggested for merchant transactions
 - **v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
@@ -42,11 +42,11 @@ These settings allow automatic transfers from your inventory without asking you 
 - **SkyrimNet Beta 25 or newer** (required; earlier versions are unsupported)
 - JContainers SE or VR build matching the game; PO3 Papyrus Extender SE or VR build matching the game
 - SkyUI SE or VR build matching the game
-- Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) on runtimes it supports; unavailable on Skyrim 1.7.x and VR, where the MCM workaround above applies
+- Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) for choice dialogs on supported runtimes; unavailable on Skyrim 1.7.x, where the MCM workaround above applies. The normal v1.0.0 file worked on VR; the workaround is optional there for users who prefer no dialogs.
 - Optional: Open Animation Replacer (OAR); optional animation add-on [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191)
 
 ## Quick Installation
-1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet Beta 25 or newer, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox only for supported runtimes; on 1.7.x and VR, use the workaround above. OAR and the animation add-on are optional.
+1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet Beta 25 or newer, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox for supported runtimes; on 1.7.x, use the workaround above. On VR, the normal v1.0.0 file was tested working; use the workaround only if you prefer no dialogs. OAR and the animation add-on are optional.
 2. Install the v0.6.8 candidate ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. If using OAR and the optional animation add-on, load iActions after them.
 4. Configure in MCM.
@@ -85,7 +85,7 @@ Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some
 
 #### From v0.5.7 to v0.6.8
 
-1. Install **SkyrimNet Beta 25 or newer** first. Install Papyrus MessageBox only for supported runtimes; on 1.7.x and VR use the auto-take/auto-give workaround above.
+1. Install **SkyrimNet Beta 25 or newer** first. Install Papyrus MessageBox for supported runtimes; on 1.7.x use the workaround above. On VR, MessageBox v1.0.0 worked; the workaround is optional if you prefer no dialogs.
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed.
 
 #### From v0.6.0 to v0.6.8
