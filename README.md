@@ -94,6 +94,44 @@ Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed.
 3. Optional: edit `SKSE/Plugins/iActions/extra_alcohol.json` to add custom drinks
 
+## Source & building
+
+The history-free source snapshot is under [`source/`](source): native SKSE code in `CppAPI/`, Papyrus scripts in `Papyrus/`. Native build prerequisites: Windows x64, Visual Studio 2022 Community with Desktop development with C++ and a Windows SDK, CMake 3.21+, Ninja, Git, and the VS-bundled vcpkg. Network access is needed for pinned CommonLibVR and vcpkg dependencies; no private checkout or prebuilt DLL is required.
+
+Use a short checkout path (for example `C:\src\iActions`); deeply nested paths can fail inside vcpkg with Git's `Filename too long`. For a long checkout, temporarily map its `source` directory with `subst Q: <absolute-source-directory>` if `Q:` is unused, and start the recipe from `Q:\` instead of running `cd source`; remove the mapping afterward with `subst Q: /D`. The process-local Git setting below also covers recursive clones that resolve the physical long path. From this repository root in a fresh PowerShell terminal:
+
+```powershell
+cd source
+$vs = 'C:\Program Files\Microsoft Visual Studio\2022\Community'
+Import-Module "$vs\Common7\Tools\Microsoft.VisualStudio.DevShell.dll" -ErrorAction Stop
+Enter-VsDevShell -VsInstallPath $vs -Arch amd64 -SkipAutomaticLocation -ErrorAction Stop | Out-Null
+$env:VCPKG_ROOT = "$vs\VC\vcpkg"
+$env:VCPKG_VISUAL_STUDIO_PATH = $vs
+$env:VCPKG_MAX_CONCURRENCY = '2'
+$env:GIT_CONFIG_COUNT = '1'
+$env:GIT_CONFIG_KEY_0 = 'core.longpaths'
+$env:GIT_CONFIG_VALUE_0 = 'true'
+foreach ($name in 'SKYRIM_FOLDER', 'SKYRIM_MODS_FOLDER') {
+    if (Test-Path "Env:$name") { Remove-Item "Env:$name" -ErrorAction Stop }
+}
+$build = 'CppAPI/.buildenv/build/public-vs2022-clean'
+if (Test-Path $build) { throw 'Choose an absent build directory' }
+cmake --preset release -S CppAPI/.buildenv -B $build -DIACTIONS_COPY_OUTPUT=OFF
+if ($LASTEXITCODE -ne 0) { throw 'Configure failed' }
+cmake --build $build --config Release --parallel 2 --target iActions iActions_saved_parent_abi
+if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+& "$build/iActions_saved_parent_abi.exe"
+if ($LASTEXITCODE -ne 0) { throw 'Saved-parent ABI check failed' }
+& "$build/iActions_saved_parent_abi.exe" --wrong-slot
+if ($LASTEXITCODE -ne 1) { throw 'Wrong-slot negative control must fail with exit 1' }
+```
+
+The `release` preset uses Ninja, C++23 and `x64-windows-static-md` (dynamic `/MD`); the configuration requires VS2022 and applies `/Od /Ob0 /DNDEBUG`. The DLL is produced in `$build`. Keep `IACTIONS_COPY_OUTPUT=OFF`: its default `ON` copies into `source/iActions/SKSE/Plugins` in this snapshot layout, not into a mod manager. The ABI fixture is excluded from normal builds, hence the explicit target; its five synthetic runtime checks and expected-failing negative control do not certify gameplay. Papyrus compilation additionally needs the Creation Kit Papyrus compiler and dependency script imports; the native commands do not compile `.psc` files.
+
+Dependencies are fetched, not vendored: [CommonLibVR](https://github.com/MinLL/CommonLibVR/tree/550cc4fb9114649dcf526d1f3d73d710c5d7003b) (MIT), OpenVR (BSD-3-Clause), DirectXMath/DirectXTK (MIT), rapidcsv (BSD-3-Clause), spdlog (MIT), and fmt (MIT). Preserve their respective notices when distributing binaries.
+
+**License:** First-party iActions code is [MIT](LICENSE), copyright 2025–2026 Gerkinfeltser. SkyrimNet's `PublicAPI.h` has its [own MIT notice](source/CppAPI/PublicAPI-LICENSE.txt) from Fateless.Ai; SkyrimNet itself is licensed separately. The adapted OAR configuration and Bethesda `Tankard.nif` are **not** covered by the iActions MIT license.
+
 ## Credits
 The bundled OAR configuration is adapted from [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191) by samuelga24. `Tankard.nif` is a vanilla Skyrim mesh.
 

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+    { "name": "directxmath", "version>=": "2025-04-03" },
+    { "name": "directxtk", "version>=": "2025-10-27" },
+    { "name": "rapidcsv", "version>=": "8.90" },
+    { "name": "spdlog", "version>=": "1.16.0" }
+  ]
+}
