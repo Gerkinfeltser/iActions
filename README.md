@@ -43,12 +43,12 @@ These settings allow automatic transfers without asking you to choose or decline
 - JContainers SE or VR build matching the game; PO3 Papyrus Extender SE or VR build matching the game
 - SkyUI SE or VR build matching the game
 - Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) for choice dialogs on supported runtimes; unavailable on Skyrim 1.7.x, where the MCM workaround above applies. The normal v1.0.0 file worked on VR; the workaround is optional there for users who prefer no dialogs.
-- Optional: Open Animation Replacer (OAR); optional animation add-on [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191)
+- Optional: Open Animation Replacer (OAR); iActions includes a first-party drunk-animation trigger configuration. Optional animation assets are a separate download: [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191) by samuelga24.
 
 ## Quick Installation
 1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet Beta 25 or newer, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox for supported runtimes; on 1.7.x, use the workaround above. On VR, the normal v1.0.0 file was tested working; use the workaround only if you prefer no dialogs. OAR and the animation add-on are optional.
 2. Install the v0.6.8 candidate ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
-3. If using OAR and the optional animation add-on, load iActions after them.
+3. If using the optional animation mod, load iActions after it (below it in MO2's left pane). The included first-party config replaces its config, so its other-mod triggers (SunHelm, iNeed, etc.) no longer apply while this override is active. Hide or remove the iActions config to restore them.
 4. Configure in MCM.
 
 ### Upgrading
@@ -130,10 +130,10 @@ The `release` preset uses Ninja, C++23 and `x64-windows-static-md` (dynamic `/MD
 
 Dependencies are fetched, not vendored: [CommonLibVR](https://github.com/MinLL/CommonLibVR/tree/550cc4fb9114649dcf526d1f3d73d710c5d7003b) (MIT), OpenVR (BSD-3-Clause), DirectXMath/DirectXTK (MIT), rapidcsv (BSD-3-Clause), spdlog (MIT), and fmt (MIT). Preserve their respective notices when distributing binaries.
 
-**License:** First-party iActions code is [MIT](LICENSE), copyright 2025–2026 Gerkinfeltser. SkyrimNet's `PublicAPI.h` has its [own MIT notice](source/CppAPI/PublicAPI-LICENSE.txt) from Fateless.Ai; SkyrimNet itself is licensed separately. The adapted OAR configuration and Bethesda `Tankard.nif` are **not** covered by the iActions MIT license.
+**License:** First-party iActions code and the first-party OAR trigger configuration are [MIT](LICENSE), copyright 2025–2026 Gerkinfeltser. SkyrimNet's `PublicAPI.h` has its [own MIT notice](source/CppAPI/PublicAPI-LICENSE.txt) from Fateless.Ai; SkyrimNet itself is licensed separately. Bethesda `Tankard.nif` is not covered by iActions MIT.
 
 ## Credits
-The bundled OAR configuration is adapted from [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191) by samuelga24. `Tankard.nif` is a vanilla Skyrim mesh.
+Animation author: [samuelga24](https://www.nexusmods.com/skyrimspecialedition/mods/62191); the optional animation assets are a separate download and are not included. `Tankard.nif` is a vanilla Bethesda mesh.
 
 
 ## What It Does
