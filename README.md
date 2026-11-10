@@ -3,7 +3,7 @@
 
 **Current candidate: v0.6.8.** Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15. Get the candidate from [iActions on Nexus Mods]([IACTIONS_NEXUS_URL]) and SkyrimNet from [SkyrimNet on Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/198346). GitHub remains the source/history for the project, but its files and releases are not assumed to be current downloads. Previous release history: [v0.6.7 on GitHub](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.7).
 
-> **SkyrimNet Beta 25 or newer is REQUIRED**; earlier versions are unsupported. Test on a separate/non-precious save first if you're risk-averse. Upgrading from v0.6.7 does not require a clean-save migration: replace the old mod folder; do not merge files. [Upgrade notes](#upgrading).
+> **SkyrimNet** is REQUIRED. Test on a separate/non-precious save first if you're risk-averse. Upgrading from v0.6.7 does not require a clean-save migration: replace the old mod folder; do not merge files. [Upgrade notes](#upgrading).
 > (For detailed documentation, see the [iActions Wiki](https://github.com/Gerkinfeltser/iActions/wiki).)
 
 ## What changes in v0.6.8
@@ -39,25 +39,25 @@ These settings allow automatic transfers without asking you to choose or decline
 ## Requirements
 
 - Skyrim SE/AE or VR, with matching SKSE / SKSEVR and Address Library / VR Address Library for the exact game runtime
-- **SkyrimNet Beta 25 or newer** (required; earlier versions are unsupported)
+- **SkyrimNet** (required)
 - JContainers SE or VR build matching the game; PO3 Papyrus Extender SE or VR build matching the game
 - SkyUI SE or VR build matching the game
 - Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) for choice dialogs on supported runtimes; unavailable on Skyrim 1.7.x, where the MCM workaround above applies. The normal v1.0.0 file worked on VR; the workaround is optional there for users who prefer no dialogs.
 - Optional: Open Animation Replacer (OAR); iActions includes a first-party drunk-animation trigger configuration. Optional animation assets are a separate download: [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191) by samuelga24.
 
 ## Quick Installation
-1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet Beta 25 or newer, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox for supported runtimes; on 1.7.x, use the workaround above. On VR, the normal v1.0.0 file was tested working; use the workaround only if you prefer no dialogs. OAR and the animation add-on are optional.
+1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox for supported runtimes; on 1.7.x, use the workaround above. On VR, the normal v1.0.0 file was tested working; use the workaround only if you prefer no dialogs. OAR and the animation add-on are optional.
 2. Install the v0.6.8 candidate ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. If using the optional animation mod, load iActions after it (below it in MO2's left pane). The included first-party config replaces its config, so its other-mod triggers (SunHelm, iNeed, etc.) no longer apply while this override is active. Hide or remove the iActions config to restore them.
 4. Configure in MCM.
 
 ### Upgrading
 
-> **iActions v0.6.8 requires SkyrimNet Beta 25 or newer.** Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable before launching the game.
+> **iActions v0.6.8 requires SkyrimNet.** Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable before launching the game.
 
 #### From v0.6.5, v0.6.6 or v0.6.7 to v0.6.8
 
-1. Install or update to **SkyrimNet Beta 25 or newer**
+1. Install or update to **SkyrimNet**
 2. Replace the previous iActions mod folder with the candidate; do not merge files. No clean-save migration is required.
 3. Review SkyrimNet plugin enablement, priority, Hub association, and overlay relationships after upgrading
 4. Reapply per-action settings stored under old action names only when upgrading from v0.6.5 or v0.6.6
@@ -85,12 +85,12 @@ Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some
 
 #### From v0.5.7 to v0.6.8
 
-1. Install **SkyrimNet Beta 25 or newer** first. Install Papyrus MessageBox for supported runtimes; on 1.7.x use the workaround above. On VR, MessageBox v1.0.0 worked; the workaround is optional if you prefer no dialogs.
+1. Install **SkyrimNet** first. Install Papyrus MessageBox for supported runtimes; on 1.7.x use the workaround above. On VR, MessageBox v1.0.0 worked; the workaround is optional if you prefer no dialogs.
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed.
 
 #### From v0.6.0 to v0.6.8
 
-1. Install or update to **SkyrimNet Beta 25 or newer**
+1. Install or update to **SkyrimNet**
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed.
 3. Optional: edit `SKSE/Plugins/iActions/extra_alcohol.json` to add custom drinks
 
