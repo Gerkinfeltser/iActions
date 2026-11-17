@@ -1,8 +1,6 @@
 ![iActions welcomes you!](https://raw.githubusercontent.com/Gerkinfeltser/iActions/master/images/iActions-banner.png)
 # iActions v0.7.0 for SkyrimNet — Quick Start
 
-**Made with AI.** iActions couldn't have been made without the aid of AI, but it is tested by real humans.
-
 **Current release: v0.7.0.** Get it from [iActions on Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/198692) and SkyrimNet from [SkyrimNet on Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/198346). GitHub remains the source/history for the project, but its files and releases are not assumed to be current downloads. Previous release history: [v0.6.7 on GitHub](https://github.com/Gerkinfeltser/iActions/releases/tag/0.6.7).
 
 > **SkyrimNet** is REQUIRED. Test on a separate/non-precious save first if you're risk-averse. Upgrading from v0.6.7 does not require a clean-save migration: replace the old mod folder; do not merge files. [Upgrade notes](#upgrading).
@@ -156,6 +154,8 @@ Accepted levels: `trace`, `debug`, `info` (default), `warn`, `error`, `off`.
 
 ## Credits
 The bundled OAR configuration is adapted from [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191) by samuelga24. `Tankard.nif` is a vanilla Skyrim mesh.
+
+**Made with AI.** iActions couldn't have been made without the aid of AI, but it is tested by real humans.
 
 
 ## What It Does
