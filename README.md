@@ -17,7 +17,7 @@
 - **New MCM options (Drunk Behavior, both off by default):** **NPC Drinks on the House** lets NPCs take drinks from merchants without paying (the narration still reads as a normal sale; your own trades are unchanged). **Short-Lived Drink Events** keeps drink results in SkyrimNet's scene context for 2 minutes instead of saving them to event history and memories, so long drinking sessions don't fill NPC memories (NPCs won't recall the drinks later; their drunk level still shows).
 - **DLL log level** is now set in `iActions.ini` (see [DLL log level](#dll-log-level)).
 
-The 0.7.0 drink changes were tested on Skyrim 1.6.1170. Save compatible with v0.6.7: no clean-save migration. Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable, alongside a compatible SkyrimNet build and the required dependencies below.
+The 0.7.0 drink changes were tested on Skyrim 1.6.1170 and 1.7.104. Save compatible with v0.6.7: no clean-save migration. Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable, alongside a compatible SkyrimNet build and the required dependencies below.
 
 ### Papyrus MessageBox workaround (Skyrim 1.7.x only)
 
