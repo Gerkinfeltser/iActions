@@ -930,7 +930,7 @@ Event OnOptionHighlight(Int option)
     ElseIf option == _oidEnableAutoTakeAlcohol
         SetInfoText("When enabled, if NPC attempts to alcohol but has none, drink will be auto-taken from player's inventory, otherwise a choice dialog box will prompt for player input.")
     ElseIf option == _oidNPCDrinksOnTheHouse
-        SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock. Your own trades are unchanged. Default: Off")
+        SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock, and the narration reads as a normal sale. Your own trades are unchanged. Default: Off")
     ElseIf option == _oidRespondDirectlyToActions
         SetInfoText("When enabled, stumble actions, alcohol failure messages, and area pacify actions will send direct narration for immediate character responses. When disabled, only regular notifications are shown.")
     ElseIf option == _oidForcePushKey

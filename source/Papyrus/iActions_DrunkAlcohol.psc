@@ -258,13 +258,14 @@ Form Function BuyDrinkFrom(Actor akSeller, Actor akBuyer, String drinkName)
         LogAlert("BuyDrinkFrom: no alcohol in " + akSeller.GetDisplayName() + "'s merchant chest", False, False, False)
         Return None
     EndIf
-    If Core.NPCDrinksOnTheHouse
-        chest.RemoveItem(drink, 1, True, akBuyer)
-        BuyNote = akSeller.GetDisplayName() + " gives " + akBuyer.GetDisplayName() + " a " + drink.GetName() + " on the house. "
-        Return drink
-    EndIf
     Form gold = Game.GetFormFromFile(0x0000000F, "Skyrim.esm")
     Int price = drink.GetGoldValue()
+    If Core.NPCDrinksOnTheHouse
+        ; No gold moves, but the narration reads as a normal sale (owner 2026-11-17: the seller should not know).
+        chest.RemoveItem(drink, 1, True, akBuyer)
+        BuyNote = akBuyer.GetDisplayName() + " buys a " + drink.GetName() + " from " + akSeller.GetDisplayName() + " for " + price + " gold. "
+        Return drink
+    EndIf
     If akBuyer.GetItemCount(gold) < price
         BuyNote = akBuyer.GetDisplayName() + " can't afford a " + drink.GetName() + " from " + akSeller.GetDisplayName() + " (" + price + " gold). "
         Return None
