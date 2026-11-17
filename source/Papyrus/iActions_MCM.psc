@@ -37,6 +37,7 @@ Int _oidStumbleAndFallCooldown
 Int _oidPacifyCooldown
 Int _oidExchangeItemsCooldown
 Int _oidEnableAutoTakeAlcohol
+Int _oidNPCDrinksOnTheHouse
 
 ; Food System
 Int _oidEnableAutoGiveFood
@@ -139,8 +140,10 @@ Function DrawDrunkBehaviorPage()
             flags = OPTION_FLAG_DISABLED
         EndIf
         _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", DrunkSystem.EnableAutoTakeAlcohol, flags)
+        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", DrunkSystem.NPCDrinksOnTheHouse, flags)
     Else
         _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", False, OPTION_FLAG_DISABLED)
+        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", False, OPTION_FLAG_DISABLED)
     EndIf
     If DrunkSystem
         _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", DrunkSystem.MaxDrunkMembers, "{0}")
@@ -423,6 +426,10 @@ Event OnOptionSelect(Int option)
             Debug.Notification("[iAct MCM] Manual alcohol selection enabled - inventory will open")
         EndIf
         
+    ElseIf option == _oidNPCDrinksOnTheHouse
+        DrunkSystem.NPCDrinksOnTheHouse = !DrunkSystem.NPCDrinksOnTheHouse
+        SetToggleOptionValue(option, DrunkSystem.NPCDrinksOnTheHouse)
+
     ElseIf option == _oidRespondDirectlyToActions
         Lib.RespondDirectlyToActions = !Lib.RespondDirectlyToActions
         SetToggleOptionValue(option, Lib.RespondDirectlyToActions)
@@ -589,6 +596,10 @@ Event OnOptionDefault(Int option)
         
     ElseIf option == _oidEnableAutoTakeAlcohol
         DrunkSystem.EnableAutoTakeAlcohol = False
+        SetToggleOptionValue(option, False)
+
+    ElseIf option == _oidNPCDrinksOnTheHouse
+        DrunkSystem.NPCDrinksOnTheHouse = False
         SetToggleOptionValue(option, False)
         
     ElseIf option == _oidRespondDirectlyToActions
@@ -918,6 +929,8 @@ Event OnOptionHighlight(Int option)
         SetInfoText("Caps drunk levels at maximum. Over-limit NPCs are reduced when enabled. Disable for unlimited progression.")
     ElseIf option == _oidEnableAutoTakeAlcohol
         SetInfoText("When enabled, if NPC attempts to alcohol but has none, drink will be auto-taken from player's inventory, otherwise a choice dialog box will prompt for player input.")
+    ElseIf option == _oidNPCDrinksOnTheHouse
+        SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock. Your own trades are unchanged. Default: Off")
     ElseIf option == _oidRespondDirectlyToActions
         SetInfoText("When enabled, stumble actions, alcohol failure messages, and area pacify actions will send direct narration for immediate character responses. When disabled, only regular notifications are shown.")
     ElseIf option == _oidForcePushKey
@@ -967,6 +980,7 @@ Function ResetAllCoreSettings()
     ; Note: ShowDrunkRank is now handled by Lib.EnableDebugNotify
     DrunkSystem.EnableDrunkCap = True
     DrunkSystem.EnableAutoTakeAlcohol = False
+    DrunkSystem.NPCDrinksOnTheHouse = False
     DrunkSystem.EnableAnimations = True
     DrunkSystem.MaxDrunkMembers = 32
     DrunkSystem.MemberPollRate = 300.0

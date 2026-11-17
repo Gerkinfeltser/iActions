@@ -44,6 +44,8 @@ Bool Property EnableAutoSobering = True Auto
 Bool Property EnableDrunkCap = True Auto
 
 Bool Property EnableAutoTakeAlcohol = False Auto
+; MCM "NPC Drinks on the House": an NPC buying a drink through iActions pays nothing. The player's own trades are unchanged.
+Bool Property NPCDrinksOnTheHouse = False Auto
 Bool Property EnableAnimations = True Auto
 Int Property MIN_MEMBER_POLL_RATE = 20 AutoReadOnly
 Int Property MAX_MEMBER_POLL_RATE = 600 AutoReadOnly

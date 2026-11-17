@@ -258,6 +258,11 @@ Form Function BuyDrinkFrom(Actor akSeller, Actor akBuyer, String drinkName)
         LogAlert("BuyDrinkFrom: no alcohol in " + akSeller.GetDisplayName() + "'s merchant chest", False, False, False)
         Return None
     EndIf
+    If Core.NPCDrinksOnTheHouse
+        chest.RemoveItem(drink, 1, True, akBuyer)
+        BuyNote = akSeller.GetDisplayName() + " gives " + akBuyer.GetDisplayName() + " a " + drink.GetName() + " on the house. "
+        Return drink
+    EndIf
     Form gold = Game.GetFormFromFile(0x0000000F, "Skyrim.esm")
     Int price = drink.GetGoldValue()
     If akBuyer.GetItemCount(gold) < price
