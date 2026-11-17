@@ -8,7 +8,7 @@
 
 ## What changes in v0.7.0
 
-- **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15; expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (This was the unpublished 0.6.8 build.)
+- **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170 and 1.7.104; VR 1.4.15 was tested with the 0.6.8 build; 0.7.0 is untested on VR. Expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (VR support first came in the unpublished 0.6.8 build.)
 - **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). An NPC with no drink buys one from a nearby merchant who sells alcohol. The narration says where the drink came from.
 - **Request prompt.** Drink and food requests now ask you through a new iActions prompt in [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303). It replaces Papyrus MessageBox, which still works where installed (on 1.7.104 with a community build) and is expected to be dropped later. You need one of the two, or the MCM workaround below.
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
@@ -56,7 +56,7 @@ These settings allow automatic transfers without asking you to choose or decline
 
 ## Quick Installation
 1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR, plus Magelight UI (or Papyrus MessageBox where available) for request prompts; with neither, use the workaround above. KID, OAR and the animation add-on are optional.
-2. Install the v0.7.0 ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
+2. Install the v0.7.0 ZIP with your mod manager. Its ESP, Magelight, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. If using OAR and the optional animation add-on, load iActions after them.
 4. Configure in MCM.
 
@@ -179,19 +179,19 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
    - A giver who is dead or too far from the drinker is ignored.
 2. **The drinker's own inventory.**
 3. **The nearest merchant who sells alcohol.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach whose stock has alcohol: an innkeeper, a tavern keeper, a general store. Same price and gold check as above; only when alcohol is required. With MCM **Drunk Behavior → NPC Drinks on the House** on (default off), no gold changes hands, here and in step 1, but the narration reads as a normal sale, so neither NPC knows it was free. Your own trades are unchanged.
-4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
+4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with **Disable Alcohol Requirement in Inns** on; only locations Skyrim tags as inns count, and some taverns, such as the Drunken Huntsman, are not tagged).
 5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
 If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the drinker reacts (with a giver or seller, the drinker decides who to address).
 
 ## Key MCM Settings
-- Alcohol required by default (can be disabled completely or only in inns/taverns)
+- Alcohol required by default (can be disabled completely or only in locations Skyrim tags as inns)
 - **v0.7.0**: NPC Drinks on the House (NPCs don't pay merchants; off by default), Short-Lived Drink Events (drink results fade after 2 minutes instead of entering NPC memories; off by default)
 - 20-second cooldowns to prevent drink/stumble spam
 - Auto-incremental sobering every 5 minutes (configurable)
 - **v0.6.5**: 26 drinks, custom drinks JSON, specific drink selection, FormID-based detection
 - **v0.6.0**: Receive Food — Followers request food (survival mode focus), Auto-Give toggle, Max Food Items (1-20), Food Preference Order (4 options), Cooldown (1-300s)
-- **v0.5.7**: Sleep Sobering — PointsPerSleepHour (0-100, default: 4). Points drunk NPCs lose per hour of sleep. Set to 0 to disable. Example: 8 hours sleep × 4 points = 32 points lost (~4 drunk tiers)
+- **v0.5.7**: Sleep Sobering — PointsPerSleepHour (0-40, default: 4). Points drunk NPCs lose per hour of sleep. Set to 0 to disable. Example: 8 hours sleep × 4 points = 32 points lost (~4 drunk tiers)
 - **v0.5.1**: Exchange Items (max types tracked: default 20, tested up to 50; more items = longer processing)
 - **v0.5.0**: Max simultaneous drunk NPCs (8-128, default 32)
 - **v0.5.0**: Toggle drink animations (user preference for animation timing)
