@@ -38,6 +38,7 @@ Int _oidPacifyCooldown
 Int _oidExchangeItemsCooldown
 Int _oidEnableAutoTakeAlcohol
 Int _oidNPCDrinksOnTheHouse
+Int _oidShortLivedDrinkEvents
 
 ; Food System
 Int _oidEnableAutoGiveFood
@@ -144,6 +145,11 @@ Function DrawDrunkBehaviorPage()
     Else
         _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", False, OPTION_FLAG_DISABLED)
         _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", False, OPTION_FLAG_DISABLED)
+    EndIf
+    If DrunkSystem
+        _oidShortLivedDrinkEvents = AddToggleOption("Short-Lived Drink Events", DrunkSystem.ShortLivedDrinkEvents)
+    Else
+        _oidShortLivedDrinkEvents = AddToggleOption("Short-Lived Drink Events", False, OPTION_FLAG_DISABLED)
     EndIf
     If DrunkSystem
         _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", DrunkSystem.MaxDrunkMembers, "{0}")
@@ -430,6 +436,10 @@ Event OnOptionSelect(Int option)
         DrunkSystem.NPCDrinksOnTheHouse = !DrunkSystem.NPCDrinksOnTheHouse
         SetToggleOptionValue(option, DrunkSystem.NPCDrinksOnTheHouse)
 
+    ElseIf option == _oidShortLivedDrinkEvents
+        DrunkSystem.ShortLivedDrinkEvents = !DrunkSystem.ShortLivedDrinkEvents
+        SetToggleOptionValue(option, DrunkSystem.ShortLivedDrinkEvents)
+
     ElseIf option == _oidRespondDirectlyToActions
         Lib.RespondDirectlyToActions = !Lib.RespondDirectlyToActions
         SetToggleOptionValue(option, Lib.RespondDirectlyToActions)
@@ -600,6 +610,10 @@ Event OnOptionDefault(Int option)
 
     ElseIf option == _oidNPCDrinksOnTheHouse
         DrunkSystem.NPCDrinksOnTheHouse = False
+        SetToggleOptionValue(option, False)
+
+    ElseIf option == _oidShortLivedDrinkEvents
+        DrunkSystem.ShortLivedDrinkEvents = False
         SetToggleOptionValue(option, False)
         
     ElseIf option == _oidRespondDirectlyToActions
@@ -931,6 +945,8 @@ Event OnOptionHighlight(Int option)
         SetInfoText("When enabled, if NPC attempts to alcohol but has none, drink will be auto-taken from player's inventory, otherwise a choice dialog box will prompt for player input.")
     ElseIf option == _oidNPCDrinksOnTheHouse
         SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock, and the narration reads as a normal sale. Your own trades are unchanged. Default: Off")
+    ElseIf option == _oidShortLivedDrinkEvents
+        SetInfoText("Drink results (drinks, purchases, refusals) stay in SkyrimNet's scene context for 2 minutes and are never saved to event history or memories. Keeps long drinking sessions from filling NPC memories; NPCs won't recall the drinks later. Drunk level still shows. Default: Off")
     ElseIf option == _oidRespondDirectlyToActions
         SetInfoText("When enabled, stumble actions, alcohol failure messages, and area pacify actions will send direct narration for immediate character responses. When disabled, only regular notifications are shown.")
     ElseIf option == _oidForcePushKey
@@ -981,6 +997,7 @@ Function ResetAllCoreSettings()
     DrunkSystem.EnableDrunkCap = True
     DrunkSystem.EnableAutoTakeAlcohol = False
     DrunkSystem.NPCDrinksOnTheHouse = False
+    DrunkSystem.ShortLivedDrinkEvents = False
     DrunkSystem.EnableAnimations = True
     DrunkSystem.MaxDrunkMembers = 32
     DrunkSystem.MemberPollRate = 300.0

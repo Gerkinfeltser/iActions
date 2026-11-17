@@ -46,6 +46,9 @@ Bool Property EnableDrunkCap = True Auto
 Bool Property EnableAutoTakeAlcohol = False Auto
 ; MCM "NPC Drinks on the House": an NPC buying a drink through iActions pays nothing. The player's own trades are unchanged.
 Bool Property NPCDrinksOnTheHouse = False Auto
+; MCM "Short-Lived Drink Events": drink results sit in scene context for 2 minutes and are never saved to
+; SkyrimNet's history or memories.
+Bool Property ShortLivedDrinkEvents = False Auto
 Bool Property EnableAnimations = True Auto
 Int Property MIN_MEMBER_POLL_RATE = 20 AutoReadOnly
 Int Property MAX_MEMBER_POLL_RATE = 600 AutoReadOnly

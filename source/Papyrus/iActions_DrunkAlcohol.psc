@@ -298,22 +298,30 @@ Form Function FindDrinkOn(ObjectReference akHolder, String drinkName)
     Return found
 EndFunction
 
-; Reports the outcome. With an NPC giver or seller, the drinker speaks to them (owner 2026-11-17: the drinker
-; acted, so they react). With no NPC giver, SkyrimNet picks the speaker. With "respond directly" off nobody is
-; prompted, but the event still goes into SkyrimNet's history.
+; Reports the outcome. With an NPC giver or seller, the drinker speaks and picks who to address (owner
+; 2026-11-17); with no NPC giver, SkyrimNet picks the speaker. With "respond directly" off nobody is prompted.
+; Events go into SkyrimNet's history, or with Short-Lived Drink Events on only into scene context for 2 minutes.
 Function TellDrinkResult(String msg, Actor akActor, Actor akGiver)
-    Bool npcGiver = akGiver && akGiver != Game.GetPlayer()
+    Actor npcGiver = None
+    If akGiver != Game.GetPlayer()
+        npcGiver = akGiver
+    EndIf
     LogAlert(msg, True)
-    If Core.Lib.RespondDirectlyToActions
+    Bool respond = Core.Lib.RespondDirectlyToActions
+    If Core.ShortLivedDrinkEvents
+        ; One key per drinker: a newer drink replaces the older one in scene context.
+        SkyrimNetApi.RegisterShortLivedEvent("iactions_drink_" + akActor.GetFormID(), "iactions_drink", msg, "{}", 120000, akActor, npcGiver)
+        If respond
+            SkyrimNetApi.DirectNarration("", akActor) ; empty content: a reply without a persistent event
+        EndIf
+    ElseIf respond
         If npcGiver
-            SkyrimNetApi.DirectNarration(msg, akActor, akGiver)
+            SkyrimNetApi.DirectNarration(msg, akActor)
         Else
             SkyrimNetApi.DirectNarration(msg)
         EndIf
-    ElseIf npcGiver
-        SkyrimNetApi.RegisterPersistentEvent(msg, akActor, akGiver)
     Else
-        SkyrimNetApi.RegisterPersistentEvent(msg, akActor)
+        SkyrimNetApi.RegisterPersistentEvent(msg, akActor, npcGiver)
     EndIf
 EndFunction
 

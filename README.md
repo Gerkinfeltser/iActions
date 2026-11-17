@@ -14,6 +14,7 @@
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
 - **NPCs know their drinks.** When alcohol is required, an NPC's bio lists the alcohol they carry, so they can ask for a drink they actually have.
 - **Fixes:** at the drunk-NPC limit a new drinker is refused instead of being left drunk forever; sobering no longer overwrites a drink that lands mid-update; one bottle can no longer be drunk twice; mod drinks with unusual names no longer break the drink list; "(N left)" counts keyword drinks.
+- **New MCM options (Drunk Behavior, both off by default):** **NPC Drinks on the House** lets NPCs take drinks from merchants without paying (the narration still reads as a normal sale; your own trades are unchanged). **Short-Lived Drink Events** keeps drink results in SkyrimNet's scene context for 2 minutes instead of saving them to event history and memories, so long drinking sessions don't fill NPC memories (NPCs won't recall the drinks later; their drunk level still shows).
 - **DLL log level** is now set in `iActions.ini` (see [DLL log level](#dll-log-level)).
 
 The 0.7.0 drink changes were tested on Skyrim 1.6.1170. Save compatible with v0.6.7: no clean-save migration. Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable, alongside a compatible SkyrimNet build and the required dependencies below.
@@ -179,10 +180,11 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
 4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
 5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
-If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the drinker speaks to the giver or seller.
+If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the drinker reacts (with a giver or seller, the drinker decides who to address).
 
 ## Key MCM Settings
 - Alcohol required by default (can be disabled completely or only in inns/taverns)
+- **v0.7.0**: NPC Drinks on the House (NPCs don't pay merchants; off by default), Short-Lived Drink Events (drink results fade after 2 minutes instead of entering NPC memories; off by default)
 - 20-second cooldowns to prevent drink/stumble spam
 - Auto-incremental sobering every 5 minutes (configurable)
 - **v0.6.5**: 26 drinks, custom drinks JSON, specific drink selection, FormID-based detection
