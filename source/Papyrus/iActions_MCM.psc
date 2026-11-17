@@ -123,38 +123,26 @@ Function DrawDrunkBehaviorPage()
         _oidRequireAlcohol = AddToggleOption("Require Alcohol in Inventory", True) ; Safe default
     EndIf
     
-    ; Location-based alcohol requirement override
-    If DrunkSystem
-        Int flags = OPTION_FLAG_NONE
-        If !DrunkSystem.RequireAlcohol
-            flags = OPTION_FLAG_DISABLED
+    ; Auto-Take, Inn waiver and On the House all need Require Alcohol. On the House is also greyed out while the
+    ; inn waiver is on (owner 2026-11-17); its saved value still applies outside inns.
+    Int reqFlags = OPTION_FLAG_DISABLED
+    Int houseFlags = OPTION_FLAG_DISABLED
+    If DrunkSystem && DrunkSystem.RequireAlcohol
+        reqFlags = OPTION_FLAG_NONE
+        If !DrunkSystem.DisableAlcoholRequirementInInns
+            houseFlags = OPTION_FLAG_NONE
         EndIf
-        _oidDisableAlcoholRequirementInInns = AddToggleOption("Disable Alcohol Requirement in Inns", DrunkSystem.DisableAlcoholRequirementInInns, flags)
-    Else
-        _oidDisableAlcoholRequirementInInns = AddToggleOption("Disable Alcohol Requirement in Inns", False, OPTION_FLAG_DISABLED)
-    EndIf
-    
-    ; Auto-take alcohol setting (also disabled when Require Alcohol is off)
-    If DrunkSystem
-        Int flags = OPTION_FLAG_NONE
-        If !DrunkSystem.RequireAlcohol
-            flags = OPTION_FLAG_DISABLED
-        EndIf
-        _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", DrunkSystem.EnableAutoTakeAlcohol, flags)
-        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", DrunkSystem.NPCDrinksOnTheHouse, flags)
-    Else
-        _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", False, OPTION_FLAG_DISABLED)
-        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", False, OPTION_FLAG_DISABLED)
     EndIf
     If DrunkSystem
+        _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", DrunkSystem.EnableAutoTakeAlcohol, reqFlags)
+        _oidDisableAlcoholRequirementInInns = AddToggleOption("Disable Alcohol Requirement in Inns", DrunkSystem.DisableAlcoholRequirementInInns, reqFlags)
+        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", DrunkSystem.NPCDrinksOnTheHouse, houseFlags)
         _oidShortLivedDrinkEvents = AddToggleOption("Short-Lived Drink Events", DrunkSystem.ShortLivedDrinkEvents)
     Else
+        _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", False, OPTION_FLAG_DISABLED)
+        _oidDisableAlcoholRequirementInInns = AddToggleOption("Disable Alcohol Requirement in Inns", False, OPTION_FLAG_DISABLED)
+        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", False, OPTION_FLAG_DISABLED)
         _oidShortLivedDrinkEvents = AddToggleOption("Short-Lived Drink Events", False, OPTION_FLAG_DISABLED)
-    EndIf
-    If DrunkSystem
-        _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", DrunkSystem.MaxDrunkMembers, "{0}")
-    Else
-        _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", 32, "{0}")
     EndIf
     AddEmptyOption()
 
@@ -179,10 +167,12 @@ Function DrawDrunkBehaviorPage()
         _oidPointsPerLevel = AddSliderOption("Points Per Drunk Category", DrunkSystem.PointsPerLevel, "{0}")
         _oidPointsPerDrink = AddSliderOption("Points Per Drink", DrunkSystem.PointsPerDrink, "{0}")
         _oidEnableDrunkCap = AddToggleOption("Enable Drunk Level Cap", DrunkSystem.EnableDrunkCap)
+        _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", DrunkSystem.MaxDrunkMembers, "{0}")
     Else
         _oidPointsPerLevel = AddSliderOption("Points Per Drunk Category", 2, "{0}")
         _oidPointsPerDrink = AddSliderOption("Points Per Drink", 2, "{0}")
         _oidEnableDrunkCap = AddToggleOption("Enable Drunk Level Cap", True)
+        _oidMaxDrunkMembers = AddSliderOption("Max Simultaneous Drunk NPCs", 32, "{0}")
     EndIf
     AddEmptyOption()
     
@@ -338,6 +328,7 @@ Event OnOptionSelect(Int option)
         Else
             Debug.Notification("[iAct MCM] Alcohol requirement enabled in inns")
         EndIf
+        ForcePageReset() ; greys out NPC Drinks on the House
         
     ElseIf option == _oidEnableAutoSobering
         DrunkSystem.EnableAutoSobering = !DrunkSystem.EnableAutoSobering
