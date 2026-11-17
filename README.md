@@ -9,7 +9,7 @@
 ## What changes in v0.7.0
 
 - **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15; expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (This was the unpublished 0.6.8 build.)
-- **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). The narration says where the drink came from.
+- **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). In an inn, an NPC with no drink buys one from the innkeeper. The narration says where the drink came from.
 - **Request prompt.** With the optional [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) installed, drink and food requests use a new iActions prompt; without it they use Papyrus MessageBox as before.
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
 - **NPCs know their drinks.** When alcohol is required, an NPC's bio lists the alcohol they carry, so they can ask for a drink they actually have.
@@ -20,7 +20,7 @@ The 0.7.0 drink changes were tested on Skyrim 1.6.1170. Save compatible with v0.
 
 ### Papyrus MessageBox workaround (Skyrim 1.7.x only)
 
-Papyrus MessageBox is unavailable on Skyrim 1.7.x. Magelight UI supports 1.7.x, so with it installed iActions shows its own request prompt instead; that combination is untested on 1.7.x. Without Magelight, configure the iActions MCM to use player-supplied drinking or food requests:
+Papyrus MessageBox is unavailable on Skyrim 1.7.x. Magelight UI supports 1.7.x, so with it installed iActions shows its own request prompt instead (tested on 1.7.104). Without Magelight, configure the iActions MCM to use player-supplied drinking or food requests:
 
 - **Drunk Behavior → Auto-Take Alcohol: ON** for drinks taken from your inventory. If the toggle is greyed out, enable **Require Alcohol in Inventory** first.
 - **Configuration → Auto-Give Food: ON** for food requests. **Auto-Give Max Food Items** controls the transfer limit.
@@ -48,6 +48,7 @@ These settings allow automatic transfers without asking you to choose or decline
 - **[SkyrimNet](https://www.nexusmods.com/skyrimspecialedition/mods/198346)** (required)
 - [JContainers SE](https://www.nexusmods.com/skyrimspecialedition/mods/16495) or its VR build, matching the game; [PO3 Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854) SE or VR build, matching the game
 - [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604) SE or VR build matching the game
+- [PapyrusUtil SE](https://www.nexusmods.com/skyrimspecialedition/mods/13048) or its VR build, matching the game (SkyrimNet also requires it)
 - Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) for choice dialogs on supported runtimes; unavailable on Skyrim 1.7.x, where the MCM workaround above applies. The normal v1.0.0 file worked on VR; the workaround is optional there for users who prefer no dialogs.
 - Optional: [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) 1.6.0 or newer for the iActions request prompt; without it, requests use Papyrus MessageBox. SeverActions includes a copy of Magelight UI.
 - Optional: Open Animation Replacer (OAR); optional animation add-on [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191)
@@ -174,8 +175,9 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
    - If not, and the giver is a merchant (an innkeeper, for example), the drinker buys one from the giver's shop stock at its base price. A drinker without enough gold doesn't drink, and the narration says why. Buying only happens when alcohol is required.
    - A giver who is dead or too far from the drinker is ignored.
 2. **The drinker's own inventory.**
-3. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
-4. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
+3. **In an inn, the nearest merchant.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach, usually the innkeeper. Same price and gold check as above; only when alcohol is required.
+4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
+5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
 If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the giver or seller is the one who answers.
 

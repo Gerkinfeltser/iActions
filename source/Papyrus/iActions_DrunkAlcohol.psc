@@ -17,6 +17,31 @@ Function UpdatePlayerInInnStatus()
     EndIf
 EndFunction
 
+Bool Function IsInInn(Actor akActor)
+    Location loc = akActor.GetCurrentLocation()
+    Return loc && Core.LocTypeInn && loc.HasKeyword(Core.LocTypeInn)
+EndFunction
+
+; Nearest living NPC within 1000 units (the giver range) who has a merchant chest; None if there is none.
+Actor Function FindNearestSeller(Actor akBuyer)
+    Actor[] nearby = MiscUtil.ScanCellNPCs(akBuyer, 1000.0)
+    Actor best = None
+    Float bestDistance = 0.0
+    Int i = 0
+    While i < nearby.Length
+        Actor a = nearby[i]
+        If a && a != akBuyer && a != Game.GetPlayer() && !a.IsDead() && GetMerchantChest(a)
+            Float d = a.GetDistance(akBuyer)
+            If best == None || d < bestDistance
+                best = a
+                bestDistance = d
+            EndIf
+        EndIf
+        i += 1
+    EndWhile
+    Return best
+EndFunction
+
 Bool Function IsPlayerInInn()
     Location currentLocation = Game.GetPlayer().GetCurrentLocation()
     If currentLocation && Core.LocTypeInn
@@ -282,7 +307,8 @@ Function TellDrinkResult(String msg, Actor akActor, Actor akGiver)
     EndIf
 EndFunction
 
-; Lookup order: preselected -> giver NPC (gift, else bought from their merchant chest) -> the drinker's own -> spawn (free-drinks mode) -> the player.
+; Lookup order: preselected -> giver NPC (gift, else bought from their merchant chest) -> the drinker's own
+; -> in an inn, bought from the nearest merchant -> spawn (free-drinks mode) -> the player.
 ; The player is only asked when named as akGiver.
 ; Actors in the middle of a drink. The bottle is only used up after the animation, so a second drink_alcohol in that
 ; window would drink the same bottle again (0.7.0 run 2026-11-16-run6: one Ale, two rank steps).
@@ -378,6 +404,20 @@ Function DrinkOnce(Actor akActor, Form preSelectedAlcohol, String drinkName, Act
 
     If drink == None
         drink = FindDrinkOn(akActor, drinkName)
+    EndIf
+
+    ; In an inn, a drinker with nothing buys from the innkeeper instead of going without. Runs when no NPC giver
+    ; was named, or when the player was named but has nothing to give. Buying needs alcohol required, as above.
+    If drink == None && Core.EffectiveRequireAlcohol && (akGiver == None || (akGiver == player && FindDrinkOn(player, drinkName) == None)) && IsInInn(akActor)
+        Actor seller = FindNearestSeller(akActor)
+        If seller
+            drink = BuyDrinkFrom(seller, akActor, drinkName)
+            If BuyNote != ""
+                ; A sale or "can't afford": the seller answers, as with a named giver.
+                drinkMsg = BuyNote
+                akGiver = seller
+            EndIf
+        EndIf
     EndIf
 
     If drink == None && !Core.EffectiveRequireAlcohol
