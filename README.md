@@ -12,7 +12,7 @@
 
 - **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15; expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (This was the unpublished 0.6.8 build.)
 - **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). An NPC with no drink buys one from a nearby merchant who sells alcohol. The narration says where the drink came from.
-- **Request prompt.** With the optional [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) installed, drink and food requests use a new iActions prompt; without it they use Papyrus MessageBox as before.
+- **Request prompt.** Drink and food requests now ask you through a new iActions prompt in [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303). It replaces Papyrus MessageBox, which still works where installed but is unavailable on 1.7.x and expected to be dropped later. You need one of the two, or the MCM workaround below.
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
 - **NPCs know their drinks.** When alcohol is required, an NPC's bio lists the alcohol they carry, so they can ask for a drink they actually have.
 - **Fixes:** at the drunk-NPC limit a new drinker is refused instead of being left drunk forever; sobering no longer overwrites a drink that lands mid-update; one bottle can no longer be drunk twice; mod drinks with unusual names no longer break the drink list; "(N left)" counts keyword drinks.
@@ -21,20 +21,20 @@
 
 The 0.7.0 drink changes were tested on Skyrim 1.6.1170 and 1.7.104. Save compatible with v0.6.7: no clean-save migration. Match SKSE / SKSEVR and Address Library / VR Address Library to your Skyrim executable, alongside a compatible SkyrimNet build and the required dependencies below.
 
-### Papyrus MessageBox workaround (Skyrim 1.7.x only)
+### No request prompt? MCM workaround
 
-Papyrus MessageBox is unavailable on Skyrim 1.7.x. Magelight UI supports 1.7.x, so with it installed iActions shows its own request prompt instead (tested on 1.7.104). Without Magelight, configure the iActions MCM to use player-supplied drinking or food requests:
+Drink and food requests ask you through Magelight UI or, failing that, Papyrus MessageBox (unavailable on Skyrim 1.7.x). With neither installed, configure the iActions MCM to use player-supplied drinking or food requests:
 
 - **Drunk Behavior → Auto-Take Alcohol: ON** for drinks taken from your inventory. If the toggle is greyed out, enable **Require Alcohol in Inventory** first.
 - **Configuration → Auto-Give Food: ON** for food requests. **Auto-Give Max Food Items** controls the transfer limit.
 
-These settings allow automatic transfers without asking you to choose or decline. Keep them enabled, including after an MCM reset. On VR, use this workaround only if you prefer no dialogs. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. This workaround does not certify the full runtime or other dependencies.
+These settings allow automatic transfers without asking you to choose or decline. Keep them enabled, including after an MCM reset. With a prompt installed, use this workaround only if you prefer not to be asked. Normal drinking from an NPC's own inventory does not need auto-take; named-drink requests can check your inventory first, so keep it on for those too. This workaround does not certify the full runtime or other dependencies.
 
 **Upgrading:** Replace the previous iActions mod folder rather than merging files. No clean-save migration is required from v0.6.7. Enable only one iActions copy.
 
 ## TL;DR
 ### **What it does**: NPCs drink, get drunk & sober over time (plus a few extras) via SkyrimNet actions
-- **NEW v0.7.0**: Skyrim VR support, NPCs give and sell each other drinks, optional Magelight request prompt, keyword-tagged drinks; see [What changes in v0.7.0](#what-changes-in-v070)
+- **NEW v0.7.0**: Skyrim VR support, NPCs give and sell each other drinks, new Magelight UI request prompt, keyword-tagged drinks; see [What changes in v0.7.0](#what-changes-in-v070)
 - **v0.6.7**: Drinking, food requests, arrow extraction and sobering became standalone actions, with the old category definitions removed
 - **v0.6.6**: Requires SkyrimNet Beta 25 or newer; moves content into the `phospheneoverdrive.iactions` external bundle, adopts snake_case action identifiers, and prevents `exchange_items` from being suggested for merchant transactions
 - **v0.6.5**: 26 vanilla drinks recognized (was 15), custom drinks via JSON config, specific drink selection by name, smart NPC alcohol inventory via SKSE decorator
@@ -52,12 +52,12 @@ These settings allow automatic transfers without asking you to choose or decline
 - [JContainers SE](https://www.nexusmods.com/skyrimspecialedition/mods/16495) or its VR build, matching the game; [PO3 Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854) SE or VR build, matching the game
 - [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604) SE or VR build matching the game
 - [PapyrusUtil SE](https://www.nexusmods.com/skyrimspecialedition/mods/13048) or its VR build, matching the game (SkyrimNet also requires it)
-- Papyrus MessageBox SE ([Nexus page](https://www.nexusmods.com/skyrimspecialedition/mods/83578)) for choice dialogs on supported runtimes; unavailable on Skyrim 1.7.x, where the MCM workaround above applies. The normal v1.0.0 file worked on VR; the workaround is optional there for users who prefer no dialogs.
-- Optional: [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) 1.6.0 or newer for the iActions request prompt; without it, requests use Papyrus MessageBox. SeverActions includes a copy of Magelight UI.
+- For drink and food request prompts, one of: [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) 1.6.0 or newer (recommended; works on 1.7.x; tested on 1.6.1170 and 1.7.104, untested on VR; SeverActions includes a copy), or [Papyrus MessageBox SE](https://www.nexusmods.com/skyrimspecialedition/mods/83578) (older; unavailable on Skyrim 1.7.x and expected to be dropped in a later version; v1.0.0 worked on VR). With neither, use the MCM workaround above.
+- Optional: [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) to tag mod drinks with the keyword `iActions_Alcohol`
 - Optional: Open Animation Replacer (OAR); optional animation add-on [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191)
 
 ## Quick Installation
-1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR. Install Papyrus MessageBox for supported runtimes; on 1.7.x, use the workaround above. On VR, the normal v1.0.0 file was tested working; use the workaround only if you prefer no dialogs. Magelight UI, OAR and the animation add-on are optional.
+1. Install SKSE / SKSEVR and Address Library / VR Address Library matching your Skyrim executable, SkyrimNet, matching JContainers and PO3 Papyrus Extender SE/VR, and SkyUI SE/VR, plus Magelight UI (or Papyrus MessageBox where available) for request prompts; with neither, use the workaround above. KID, OAR and the animation add-on are optional.
 2. Install the v0.7.0 ZIP with your mod manager. Its ESP, meshes, Scripts, SKSE, Source and `README-iActions.md` belong at the mod folder root, not inside an extra `iActions/` or `Data/` folder. Enable only one iActions copy.
 3. If using OAR and the optional animation add-on, load iActions after them.
 4. Configure in MCM.
@@ -96,7 +96,7 @@ Use `setstage SKI_ConfigManagerInstance 1` if the MCM does not appear after some
 
 #### From v0.5.7 to v0.7.0
 
-1. Install **SkyrimNet** first. Install Papyrus MessageBox for supported runtimes; on 1.7.x use the workaround above. On VR, MessageBox v1.0.0 worked; the workaround is optional if you prefer no dialogs.
+1. Install **SkyrimNet** first. Install Magelight UI (or Papyrus MessageBox where available) for request prompts; with neither, use the workaround above.
 2. Replace the previous iActions mod folder rather than merging files — save compatible, no clean-save migration needed.
 
 #### From v0.6.0 to v0.7.0
