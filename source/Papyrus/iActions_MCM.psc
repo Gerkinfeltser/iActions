@@ -60,7 +60,7 @@ Int _oidResetCoreSettings
 ; CONSTANTS
 ; =========================================================
 
-String Property MOD_VERSION = "0.6.8" AutoReadOnly
+String Property MOD_VERSION = "0.7.0" AutoReadOnly
 
 Int Function GetVersion()
     Return 2
@@ -105,7 +105,10 @@ EndEvent
 Event OnPageReset(String page)
     SetCursorFillMode(TOP_TO_BOTTOM)
     
-    If page == "Drunk Behavior"
+    If page == "" || page == "Drunk Behavior" ; "" is the landing page when the mod is clicked
+        If page == ""
+            SetTitleText("Drunk Behavior") ; SkyUI titles the landing page with the mod name
+        EndIf
         DrawDrunkBehaviorPage()
     ElseIf page == "Configuration"
         DrawControlsInterfacePage()
