@@ -176,7 +176,7 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
    - If not, and the giver is a merchant (an innkeeper, for example), the drinker buys one from the giver's shop stock at its base price. A drinker without enough gold doesn't drink, and the narration says why. Buying only happens when alcohol is required.
    - A giver who is dead or too far from the drinker is ignored.
 2. **The drinker's own inventory.**
-3. **The nearest merchant who sells alcohol.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach whose stock has alcohol: an innkeeper, a tavern keeper, a general store. Same price and gold check as above; only when alcohol is required. With MCM **Drunk Behavior → NPC Drinks on the House** on (default off), merchants give the drink free, here and in step 1; your own trades are unchanged.
+3. **The nearest merchant who sells alcohol.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach whose stock has alcohol: an innkeeper, a tavern keeper, a general store. Same price and gold check as above; only when alcohol is required. With MCM **Drunk Behavior → NPC Drinks on the House** on (default off), no gold changes hands, here and in step 1, but the narration reads as a normal sale, so neither NPC knows it was free. Your own trades are unchanged.
 4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
 5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
