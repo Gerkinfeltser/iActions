@@ -123,20 +123,16 @@ Function DrawDrunkBehaviorPage()
         _oidRequireAlcohol = AddToggleOption("Require Alcohol in Inventory", True) ; Safe default
     EndIf
     
-    ; Auto-Take, Inn waiver and On the House all need Require Alcohol. On the House is also greyed out while the
-    ; inn waiver is on (owner 2026-11-17); its saved value still applies outside inns.
+    ; Auto-Take, Inn waiver and On the House all need Require Alcohol. On the House stays independent of the
+    ; inn waiver (owner 2026-11-17): the waiver covers inns, On the House covers merchants elsewhere.
     Int reqFlags = OPTION_FLAG_DISABLED
-    Int houseFlags = OPTION_FLAG_DISABLED
     If DrunkSystem && DrunkSystem.RequireAlcohol
         reqFlags = OPTION_FLAG_NONE
-        If !DrunkSystem.DisableAlcoholRequirementInInns
-            houseFlags = OPTION_FLAG_NONE
-        EndIf
     EndIf
     If DrunkSystem
         _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", DrunkSystem.EnableAutoTakeAlcohol, reqFlags)
         _oidDisableAlcoholRequirementInInns = AddToggleOption("Disable Alcohol Requirement in Inns", DrunkSystem.DisableAlcoholRequirementInInns, reqFlags)
-        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", DrunkSystem.NPCDrinksOnTheHouse, houseFlags)
+        _oidNPCDrinksOnTheHouse = AddToggleOption("NPC Drinks on the House", DrunkSystem.NPCDrinksOnTheHouse, reqFlags)
         _oidShortLivedDrinkEvents = AddToggleOption("Short-Lived Drink Events", DrunkSystem.ShortLivedDrinkEvents)
     Else
         _oidEnableAutoTakeAlcohol = AddToggleOption("Auto-Take Alcohol", False, OPTION_FLAG_DISABLED)
@@ -328,7 +324,6 @@ Event OnOptionSelect(Int option)
         Else
             Debug.Notification("[iAct MCM] Alcohol requirement enabled in inns")
         EndIf
-        ForcePageReset() ; greys out NPC Drinks on the House
         
     ElseIf option == _oidEnableAutoSobering
         DrunkSystem.EnableAutoSobering = !DrunkSystem.EnableAutoSobering
@@ -935,7 +930,7 @@ Event OnOptionHighlight(Int option)
     ElseIf option == _oidEnableAutoTakeAlcohol
         SetInfoText("When enabled, if NPC attempts to alcohol but has none, drink will be auto-taken from player's inventory, otherwise a choice dialog box will prompt for player input.")
     ElseIf option == _oidNPCDrinksOnTheHouse
-        SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock, and the narration reads as a normal sale. Your own trades are unchanged. Default: Off")
+        SetInfoText("When an NPC buys a drink from a merchant through iActions, they pay nothing. The drink still comes from the merchant's stock, and the narration reads as a normal sale. Your own trades are unchanged. In inns with the inn waiver on, drinks are already free. Default: Off")
     ElseIf option == _oidShortLivedDrinkEvents
         SetInfoText("Drink results (drinks, purchases, refusals) stay in SkyrimNet's scene context for 2 minutes and are never saved to event history or memories. Keeps long drinking sessions from filling NPC memories; NPCs won't recall the drinks later. Drunk level still shows. Default: Off")
     ElseIf option == _oidRespondDirectlyToActions
