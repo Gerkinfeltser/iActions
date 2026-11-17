@@ -298,18 +298,22 @@ Form Function FindDrinkOn(ObjectReference akHolder, String drinkName)
     Return found
 EndFunction
 
-; Reports the outcome. With an NPC giver or seller, that NPC is the one SkyrimNet has answer the drinker;
-; with "respond directly" off they still get the event in their history, without a reaction.
+; Reports the outcome. With an NPC giver or seller, the drinker speaks to them (owner 2026-11-17: the drinker
+; acted, so they react). With no NPC giver, SkyrimNet picks the speaker. With "respond directly" off nobody is
+; prompted, but the event still goes into SkyrimNet's history.
 Function TellDrinkResult(String msg, Actor akActor, Actor akGiver)
-    If akGiver == None || akGiver == Game.GetPlayer()
-        LogAlert(msg, True, Core.Lib.RespondDirectlyToActions)
-        Return
-    EndIf
+    Bool npcGiver = akGiver && akGiver != Game.GetPlayer()
     LogAlert(msg, True)
     If Core.Lib.RespondDirectlyToActions
-        SkyrimNetApi.DirectNarration(msg, akGiver, akActor)
-    Else
+        If npcGiver
+            SkyrimNetApi.DirectNarration(msg, akActor, akGiver)
+        Else
+            SkyrimNetApi.DirectNarration(msg)
+        EndIf
+    ElseIf npcGiver
         SkyrimNetApi.RegisterPersistentEvent(msg, akActor, akGiver)
+    Else
+        SkyrimNetApi.RegisterPersistentEvent(msg, akActor)
     EndIf
 EndFunction
 

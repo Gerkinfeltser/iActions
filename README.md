@@ -179,7 +179,7 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
 4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
 5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
-If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the giver or seller is the one who answers.
+If the NPC asks for a drink by name ("a bottle of Black-Briar Mead"), each step looks for that drink first. The narration says where the drink came from, and the drinker speaks to the giver or seller.
 
 ## Key MCM Settings
 - Alcohol required by default (can be disabled completely or only in inns/taverns)
