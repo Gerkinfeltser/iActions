@@ -309,8 +309,10 @@ Function TellDrinkResult(String msg, Actor akActor, Actor akGiver)
     LogAlert(msg, True)
     Bool respond = Core.Lib.RespondDirectlyToActions
     If Core.ShortLivedDrinkEvents
-        ; One key per drinker: a newer drink replaces the older one in scene context.
-        SkyrimNetApi.RegisterShortLivedEvent("iactions_drink_" + akActor.GetFormID(), "iactions_drink", msg, "{}", 120000, akActor, npcGiver)
+        ; One key per drinker: a newer drink replaces the older one in scene context. The type is not registered,
+        ; so SkyrimNet's recent-events prompt shows the data string (EventSchemaRegistry::FormatEvent fallback):
+        ; the message goes in data as well as description.
+        SkyrimNetApi.RegisterShortLivedEvent("iactions_drink_" + akActor.GetFormID(), "iactions_drink", msg, msg, 120000, akActor, npcGiver)
         If respond
             SkyrimNetApi.DirectNarration("", akActor) ; empty content: a reply without a persistent event
         EndIf
