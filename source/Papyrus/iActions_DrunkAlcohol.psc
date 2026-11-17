@@ -17,22 +17,22 @@ Function UpdatePlayerInInnStatus()
     EndIf
 EndFunction
 
-Bool Function IsInInn(Actor akActor)
-    Location loc = akActor.GetCurrentLocation()
-    Return loc && Core.LocTypeInn && loc.HasKeyword(Core.LocTypeInn)
-EndFunction
-
-; Nearest living NPC within 1000 units (the giver range) who has a merchant chest; None if there is none.
-Actor Function FindNearestSeller(Actor akBuyer)
+; Nearest living NPC within 1000 units (the giver range) whose merchant chest holds alcohol; None if there is none.
+; FindDrinkOn prefers the named drink but accepts any alcohol, like BuyDrinkFrom.
+Actor Function FindNearestSeller(Actor akBuyer, String drinkName)
     Actor[] nearby = MiscUtil.ScanCellNPCs(akBuyer, 1000.0)
     Actor best = None
     Float bestDistance = 0.0
     Int i = 0
     While i < nearby.Length
         Actor a = nearby[i]
-        If a && a != akBuyer && a != Game.GetPlayer() && !a.IsDead() && GetMerchantChest(a)
+        If a && a != akBuyer && a != Game.GetPlayer() && !a.IsDead()
             Float d = a.GetDistance(akBuyer)
+            ObjectReference chest = None
             If best == None || d < bestDistance
+                chest = GetMerchantChest(a)
+            EndIf
+            If chest && FindDrinkOn(chest, drinkName)
                 best = a
                 bestDistance = d
             EndIf
@@ -308,7 +308,7 @@ Function TellDrinkResult(String msg, Actor akActor, Actor akGiver)
 EndFunction
 
 ; Lookup order: preselected -> giver NPC (gift, else bought from their merchant chest) -> the drinker's own
-; -> in an inn, bought from the nearest merchant -> spawn (free-drinks mode) -> the player.
+; -> bought from the nearest merchant with alcohol in stock -> spawn (free-drinks mode) -> the player.
 ; The player is only asked when named as akGiver.
 ; Actors in the middle of a drink. The bottle is only used up after the animation, so a second drink_alcohol in that
 ; window would drink the same bottle again (0.7.0 run 2026-11-16-run6: one Ale, two rank steps).
@@ -332,7 +332,7 @@ EndFunction
 
 ; Called on game load: a claim whose thread died (stack dump, script reset) would refuse that actor for good.
 Function ResetDrinkers()
-    _drinkers = None
+    _drinkers = new Actor[16] ; "= None" fails at runtime: Cannot cast from None to Actor[]
 EndFunction
 
 Function ReleaseDrinker(Actor akActor)
@@ -406,10 +406,11 @@ Function DrinkOnce(Actor akActor, Form preSelectedAlcohol, String drinkName, Act
         drink = FindDrinkOn(akActor, drinkName)
     EndIf
 
-    ; In an inn, a drinker with nothing buys from the innkeeper instead of going without. Runs when no NPC giver
-    ; was named, or when the player was named but has nothing to give. Buying needs alcohol required, as above.
-    If drink == None && Core.EffectiveRequireAlcohol && (akGiver == None || (akGiver == player && FindDrinkOn(player, drinkName) == None)) && IsInInn(akActor)
-        Actor seller = FindNearestSeller(akActor)
+    ; A drinker with nothing buys from a nearby merchant (innkeeper, tavern, general store) instead of going without.
+    ; Not limited to inns: the Drunken Huntsman's location has no LocTypeInn. Runs when no NPC giver was named,
+    ; or when the player was named but has nothing to give. Buying needs alcohol required, as above.
+    If drink == None && Core.EffectiveRequireAlcohol && (akGiver == None || (akGiver == player && FindDrinkOn(player, drinkName) == None))
+        Actor seller = FindNearestSeller(akActor, drinkName)
         If seller
             drink = BuyDrinkFrom(seller, akActor, drinkName)
             If BuyNote != ""

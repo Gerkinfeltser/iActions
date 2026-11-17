@@ -9,7 +9,7 @@
 ## What changes in v0.7.0
 
 - **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15; expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (This was the unpublished 0.6.8 build.)
-- **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). In an inn, an NPC with no drink buys one from the innkeeper. The narration says where the drink came from.
+- **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). An NPC with no drink buys one from a nearby merchant who sells alcohol. The narration says where the drink came from.
 - **Request prompt.** With the optional [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) installed, drink and food requests use a new iActions prompt; without it they use Papyrus MessageBox as before.
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
 - **NPCs know their drinks.** When alcohol is required, an NPC's bio lists the alcohol they carry, so they can ask for a drink they actually have.
@@ -175,7 +175,7 @@ When an NPC drinks, iActions looks for the drink in this order and stops at the 
    - If not, and the giver is a merchant (an innkeeper, for example), the drinker buys one from the giver's shop stock at its base price. A drinker without enough gold doesn't drink, and the narration says why. Buying only happens when alcohol is required.
    - A giver who is dead or too far from the drinker is ignored.
 2. **The drinker's own inventory.**
-3. **In an inn, the nearest merchant.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach, usually the innkeeper. Same price and gold check as above; only when alcohol is required.
+3. **The nearest merchant who sells alcohol.** When no NPC giver was named (or you were named but carry no alcohol), a drinker with nothing buys from the nearest merchant within reach whose stock has alcohol: an innkeeper, a tavern keeper, a general store. Same price and gold check as above; only when alcohol is required.
 4. **A free drink**, when alcohol is not required (MCM **Require Alcohol in Inventory** off, or in an inn with the inn option on).
 5. **You**, only when SkyrimNet names you as the giver: the request prompt (or Auto-Take) gives a drink from your inventory.
 
