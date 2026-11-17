@@ -12,7 +12,7 @@
 
 - **Skyrim VR support.** A single native DLL supports Skyrim SE/AE and VR. Tested on Skyrim 1.6.1170, 1.7.104 and VR 1.4.15; expected to work on 1.5.97, 1.6.640 and 1.7.99 via Address Library, but untested. (This was the unpublished 0.6.8 build.)
 - **Drinks from other NPCs.** An NPC can hand a drink to another NPC, and an innkeeper or other vendor sells one from their stock (the drinker pays). An NPC with no drink buys one from a nearby merchant who sells alcohol. The narration says where the drink came from.
-- **Request prompt.** Drink and food requests now ask you through a new iActions prompt in [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303). It replaces Papyrus MessageBox, which still works where installed but is unavailable on 1.7.x and expected to be dropped later. You need one of the two, or the MCM workaround below.
+- **Request prompt.** Drink and food requests now ask you through a new iActions prompt in [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303). It replaces Papyrus MessageBox, which still works where installed (on 1.7.104 with a community build) and is expected to be dropped later. You need one of the two, or the MCM workaround below.
 - **Keyword drinks.** Any drink with the keyword `iActions_Alcohol` counts as alcohol, so a [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) ini can add mod drinks (see What It Does).
 - **NPCs know their drinks.** When alcohol is required, an NPC's bio lists the alcohol they carry, so they can ask for a drink they actually have.
 - **Fixes:** at the drunk-NPC limit a new drinker is refused instead of being left drunk forever; sobering no longer overwrites a drink that lands mid-update; one bottle can no longer be drunk twice; mod drinks with unusual names no longer break the drink list; "(N left)" counts keyword drinks.
@@ -23,7 +23,7 @@ The 0.7.0 drink changes were tested on Skyrim 1.6.1170 and 1.7.104. Save compati
 
 ### No request prompt? MCM workaround
 
-Drink and food requests ask you through Magelight UI or, failing that, Papyrus MessageBox (unavailable on Skyrim 1.7.x). With neither installed, configure the iActions MCM to use player-supplied drinking or food requests:
+Drink and food requests ask you through Magelight UI or, failing that, Papyrus MessageBox (on 1.7.104 it needs a community build). With neither installed, configure the iActions MCM to use player-supplied drinking or food requests:
 
 - **Drunk Behavior → Auto-Take Alcohol: ON** for drinks taken from your inventory. If the toggle is greyed out, enable **Require Alcohol in Inventory** first.
 - **Configuration → Auto-Give Food: ON** for food requests. **Auto-Give Max Food Items** controls the transfer limit.
@@ -52,7 +52,7 @@ These settings allow automatic transfers without asking you to choose or decline
 - [JContainers SE](https://www.nexusmods.com/skyrimspecialedition/mods/16495) or its VR build, matching the game; [PO3 Papyrus Extender](https://www.nexusmods.com/skyrimspecialedition/mods/22854) SE or VR build, matching the game
 - [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604) SE or VR build matching the game
 - [PapyrusUtil SE](https://www.nexusmods.com/skyrimspecialedition/mods/13048) or its VR build, matching the game (SkyrimNet also requires it)
-- For drink and food request prompts, one of: [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) 1.6.0 or newer (recommended; works on 1.7.x; tested on 1.6.1170 and 1.7.104, untested on VR; SeverActions includes a copy), or [Papyrus MessageBox SE](https://www.nexusmods.com/skyrimspecialedition/mods/83578) (older; unavailable on Skyrim 1.7.x and expected to be dropped in a later version; v1.0.0 worked on VR). With neither, use the MCM workaround above.
+- For drink and food request prompts, one of: [Magelight UI](https://www.nexusmods.com/skyrimspecialedition/mods/193303) 1.6.0 or newer (recommended; works on 1.7.x; tested on 1.6.1170 and 1.7.104, untested on VR; SeverActions includes a copy), or [Papyrus MessageBox SE](https://www.nexusmods.com/skyrimspecialedition/mods/83578) (older and expected to be dropped in a later version; v1.0.0 worked on VR; on 1.7.104 add the community [PapyrusMessageBox-1.7.104](https://www.nexusmods.com/skyrimspecialedition/mods/193932) build). With neither, use the MCM workaround above.
 - Optional: [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728) to tag mod drinks with the keyword `iActions_Alcohol`
 - Optional: Open Animation Replacer (OAR); optional animation add-on [Drunk or drugged animations OAR](https://www.nexusmods.com/skyrimspecialedition/mods/62191)
 
