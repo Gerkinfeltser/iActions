@@ -53,6 +53,7 @@ Int Property MaxDrunkMembers = 32 Auto
 Function Maintenance()
     LogAlert("iActions_DrunkCore running maintenance...")
     Alcohol.UpdatePlayerInInnStatus()
+    Alcohol.ResetDrinkers()
     If Cache
         Cache._extrasLoaded = False
         If !Cache._cacheInitialized
@@ -82,11 +83,19 @@ Bool Function IsAlcohol(Form akForm)
     If !akForm || !iActions_AlcoholList
         Return False
     EndIf
-    Return iActions_AlcoholList.HasForm(akForm)
+    Return iActions_AlcoholList.HasForm(akForm) || akForm.HasKeywordString("iActions_Alcohol")
 EndFunction
 
 Function SetDrunkState_Execute(Actor akActor, Bool abIsDrunk, String drinkName = "")
     SetActorDrunkState(akActor, abIsDrunk, drinkName)
+EndFunction
+
+; Entry point of drink_alcohol.yaml. sobers_up.yaml keeps SetDrunkState_Execute: SkyrimNet requires the
+; YAML parameter count to equal the function's, so the two actions cannot share one signature.
+Function DrinkAlcohol_Execute(Actor akActor, String drinkName = "", Actor akGiver = None)
+    If akActor && !akActor.IsDead()
+        Alcohol.MakeActorDrunk(akActor, None, drinkName, akGiver)
+    EndIf
 EndFunction
 
 Function SetActorDrunkState(Actor akActor, Bool abIsDrunk, String drinkName = "")

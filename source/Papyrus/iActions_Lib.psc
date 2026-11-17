@@ -392,3 +392,157 @@ Function Cleanup()
 
     LogAlert("iActions_Lib cleanup complete.")
 EndFunction
+
+; =============================================================================
+; Request prompt: Magelight UI page when installed, else Papyrus MessageBox.
+; Returns SkyMessage-style index strings: "0" Auto Give, "1" Always Auto Give,
+; "2" Give (Choose), "3" Nope. Blocks like SkyMessage.Show; the game is paused
+; while the Magelight page holds UI mode. Pattern: SQOS spike/sqos-magelight-popup.
+; =============================================================================
+String _mlRequest = ""
+String _mlResult = ""
+Int _mlView = 0
+Bool _mlDomReady = False
+Bool _mlEntered = False
+
+; asKind "drink" or "food" picks the page's option hints; aiMax = food items given per request.
+String Function ShowRequestPrompt(String asBody, String asKind = "drink", Int aiMax = 1)
+    String r = ShowMagelightRequest(asBody, asKind, aiMax)
+    If r != ""
+        Return r
+    EndIf
+    Return SkyMessage.Show(asBody, "Auto Give", "Always Auto Give", "Give (Choose)", "Nope", getIndex = true)
+EndFunction
+
+; "" = Magelight unusable before the player saw anything: caller falls back.
+String Function ShowMagelightRequest(String asBody, String asKind, Int aiMax)
+    ; Claim the slot before any call: calls can yield, and a second request must see it taken.
+    If _mlRequest != ""
+        Return ""
+    EndIf
+    _mlRequest = "claimed"
+    If SKSE.GetPluginVersion("Magelight") <= 0 || Magelight.GetVersion() == 0 || !Magelight.IsReady() || Magelight.IsUIModeActive()
+        _mlRequest = ""
+        Return ""
+    EndIf
+    String token = "r" + Utility.RandomInt(1, 2147483647)
+    _mlRequest = token
+    _mlResult = ""
+    _mlDomReady = False
+    _mlEntered = False
+    RegisterForModEvent("Magelight_ViewDomReady", "OnMLDomReady")
+    RegisterForModEvent("Magelight_UIModeEntered", "OnMLEntered")
+    RegisterForModEvent("Magelight_JS_iActionsChoice", "OnMLChoice")
+    RegisterForModEvent("Magelight_UIModeExited", "OnMLFailure")
+    RegisterForModEvent("Magelight_ViewLoadFailed", "OnMLFailure")
+    RegisterForModEvent("Magelight_ViewDestroyed", "OnMLFailure")
+    RegisterForModEvent("Magelight_RenderDead", "OnMLFailure")
+
+    If !Magelight.RegisterMod("iActions", "iActions")
+        Return EndMLRequest(token, "")
+    EndIf
+    _mlView = Magelight.FindView("iActions", "request")
+    If _mlView == 0
+        _mlView = Magelight.CreateView("iActions", "request", "views/request/index.html", 0, 0, 0, 0, "popup")
+        If _mlView == 0
+            Return EndMLRequest(token, "")
+        EndIf
+        Float domDeadline = Utility.GetCurrentRealTime() + 10.0
+        While _mlRequest == token && _mlResult == "" && !_mlDomReady && Utility.GetCurrentRealTime() < domDeadline
+            Utility.WaitMenuMode(0.1)
+        EndWhile
+        If !_mlDomReady || _mlResult == "F"
+            LogAlert("Magelight request page did not load; using message box", False, False, False)
+            Return EndMLRequest(token, "")
+        EndIf
+    EndIf
+    If _mlView == 0 || !Magelight.RegisterListener(_mlView, "iActionsChoice")
+        Return EndMLRequest(token, "")
+    EndIf
+
+    Magelight.Call(_mlView, "iActionsShow", "{\"token\":\"" + token + "\",\"kind\":\"" + asKind + "\",\"max\":" + aiMax + ",\"body\":\"" + JsonEscape(asBody) + "\"}")
+    Magelight.ShowView(_mlView, True)
+    If !Magelight.RequestUIMode(_mlView, True)
+        LogAlert("Magelight focus refused: " + Magelight.GetLastError("iActions"), False, False, False)
+        Return EndMLRequest(token, "")
+    EndIf
+    Float enterDeadline = Utility.GetCurrentRealTime() + 5.0
+    While _mlRequest == token && _mlResult == "" && !_mlEntered && Utility.GetCurrentRealTime() < enterDeadline
+        Utility.WaitMenuMode(0.1)
+    EndWhile
+    If _mlResult == "F" || (!_mlEntered && _mlResult == "")
+        Return EndMLRequest(token, "")
+    EndIf
+
+    ; The player decides; no timeout (owner 2026-11-11). Losing focus or the host counts as "Nope".
+    While _mlRequest == token && _mlResult == ""
+        Utility.WaitMenuMode(0.1)
+        If _mlResult == "" && (!Magelight.IsReady() || !Magelight.IsUIModeActive() || Magelight.GetUIModeView() != _mlView)
+            _mlResult = "3"
+        EndIf
+    EndWhile
+    Return EndMLRequest(token, _mlResult)
+EndFunction
+
+String Function EndMLRequest(String token, String result)
+    If _mlRequest != token
+        Return result
+    EndIf
+    If _mlView != 0
+        If Magelight.IsUIModeActive() && Magelight.GetUIModeView() == _mlView
+            Magelight.ReleaseUIMode("iActions")
+        EndIf
+        Magelight.ShowView(_mlView, False)
+    EndIf
+    _mlRequest = ""
+    Return result
+EndFunction
+
+Event OnMLDomReady(String eventName, String strArg, Float numArg, Form sender)
+    If _mlRequest != "" && strArg == "iActions" && numArg as Int == _mlView
+        _mlDomReady = True
+    EndIf
+EndEvent
+
+Event OnMLEntered(String eventName, String strArg, Float numArg, Form sender)
+    If _mlRequest != "" && numArg as Int == _mlView && StringUtil.Substring(strArg, 0, 8) == "iActions"
+        _mlEntered = True
+    EndIf
+EndEvent
+
+Event OnMLChoice(String eventName, String strArg, Float numArg, Form sender)
+    If _mlRequest == "" || _mlResult != "" || numArg as Int != _mlView
+        Return
+    EndIf
+    String prefix = _mlRequest + "|"
+    If strArg == prefix + "0" || strArg == prefix + "1" || strArg == prefix + "2" || strArg == prefix + "3"
+        _mlResult = StringUtil.Substring(strArg, StringUtil.GetLength(prefix))
+    EndIf
+EndEvent
+
+Event OnMLFailure(String eventName, String strArg, Float numArg, Form sender)
+    If _mlRequest == "" || _mlResult != "" || (numArg as Int != _mlView && eventName != "Magelight_RenderDead")
+        Return
+    EndIf
+    If _mlEntered
+        _mlResult = "3"   ; seen and closed (PageUp, host loss): treat as Nope
+    ElseIf eventName != "Magelight_UIModeExited"   ; an exit before entry may be the previous holder's
+        _mlResult = "F"   ; page failed before the player saw it: fall back to the message box
+    EndIf
+EndEvent
+
+String Function JsonEscape(String s) Global
+    ; ponytail: escapes only \ and "; NPC names with control characters would break the payload.
+    String out = ""
+    Int i = 0
+    Int n = StringUtil.GetLength(s)
+    While i < n
+        String c = StringUtil.GetNthChar(s, i)
+        If c == "\\" || c == "\""
+            out += "\\"
+        EndIf
+        out += c
+        i += 1
+    EndWhile
+    Return out
+EndFunction

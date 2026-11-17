@@ -242,6 +242,6 @@ EndFunction
 String Function ShowFoodChoiceDialog(Actor akActor, Form foodItem)
     String npcName = akActor.GetDisplayName()
     String msg = npcName + " is asking for food..."
-    String result = SkyMessage.Show(msg, "Auto Give", "Always Auto Give", "Give (Choose)", "Nope", getIndex = true)
+    String result = Lib.ShowRequestPrompt(msg, "food", AutoGiveMaxCount)
     Return result
 EndFunction

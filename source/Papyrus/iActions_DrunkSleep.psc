@@ -90,39 +90,18 @@ Function SoberDrunkMembersOnSleep()
     Int soberedCompletely = 0
     Int soberedPartially = 0
     
-    Int i = count
+    ; Snapshot: timed decay removing a member mid-loop cannot shift our indexes.
+    Form[] members = StorageUtil.FormListToArray(Core.Tracking, storageKey)
+    Int i = members.Length
     While i > 0
         i -= 1
-        Actor member = StorageUtil.FormListGet(Core.Tracking, storageKey, i) as Actor
-        
-        If member && !member.IsDead() && member.IsInFaction(Core.DrunkFaction)
-            Int currentRank = member.GetFactionRank(Core.DrunkFaction)
-            Int newRank = currentRank - pointsToDeduct
-            
-            If newRank < 0
-                ; Fully sobered - remove from faction
-                member.RemoveFromFaction(Core.DrunkFaction)
-                ; Remove drunk spell if present
-                If Core.DrunkSpell && member.HasSpell(Core.DrunkSpell)
-                    member.RemoveSpell(Core.DrunkSpell)
-                EndIf
-                Core.Tracking.UntrackDrunkMember(member)
-                member.EvaluatePackage()
-                soberedCompletely += 1
-            Else
-                ; Partially sobered
-                member.SetFactionRank(Core.DrunkFaction, newRank)
-                
-                ; Check if spell needs removal (dropped below Tipsy)
-                Int oldCategory = iActions_Lib.GetCategoryFromRank(currentRank, Core.PointsPerLevel)
-                Int newCategory = iActions_Lib.GetCategoryFromRank(newRank, Core.PointsPerLevel)
-                If oldCategory > Core.DrunkCategory_Tipsy && newCategory <= Core.DrunkCategory_Tipsy
-                    If Core.DrunkSpell && member.HasSpell(Core.DrunkSpell)
-                        member.RemoveSpell(Core.DrunkSpell)
-                    EndIf
-                EndIf
-                soberedPartially += 1
-            EndIf
+        Actor member = members[i] as Actor
+        Int newRank = Core.Tracking.ApplySobering(member, pointsToDeduct)
+
+        If newRank == -1
+            soberedCompletely += 1
+        ElseIf newRank >= 0
+            soberedPartially += 1
         EndIf
     EndWhile
     

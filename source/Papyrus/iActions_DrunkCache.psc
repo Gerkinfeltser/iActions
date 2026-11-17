@@ -30,6 +30,10 @@ Int Property _alcoholFormIDMap Auto Hidden
 ; Flag to track if cache is initialized
 Bool Property _cacheInitialized Auto Hidden
 
+; EditorID of the keyword that marks an item as alcohol (distributed by KID; see docs/EXTRA-ALCOHOL-GUIDE.md).
+; The DLL matches the same string (CppAPI/src/main.iactions.cpp).
+String Property AlcoholKeywordName = "iActions_Alcohol" AutoReadOnly
+
 ; ===========================================
 ; FUNCTION: InitializeAlcoholCache
 ; ===========================================
@@ -147,8 +151,10 @@ Bool Function IsAlcohol(Form akForm)
     EndIf
     
     ; Use FormList.HasForm() which properly matches base forms to inventory items
-    Bool result = Core.iActions_AlcoholList.HasForm(akForm)
-    
+    ; Keyword route: KID (or a patch plugin) tags drinks with "iActions_Alcohol". Without KID no
+    ; keyword of that name exists and HasKeywordString returns False.
+    Bool result = Core.iActions_AlcoholList.HasForm(akForm) || akForm.HasKeywordString(AlcoholKeywordName)
+
     ; Debug: Log alcohol detection attempts
     If Core.Lib && Core.Lib.EnableDebugNotify
         LogAlert("IsAlcohol check: " + akForm.GetName() + " = " + result, False, False, False)

@@ -94,7 +94,7 @@ Function ProcessInventoryExchangeResults(Actor akNPC, String exchangeSummary, Bo
         Int netCount = tracker.NetItemCounts[i]
 
         If item && netCount > 0
-            If iActions_AlcoholList.HasForm(item)
+            If Core.IsAlcohol(item)
                 ; Player gave alcohol to NPC - this is what we're looking for!
                 alcoholDetected = True
                 alcoholItem = item

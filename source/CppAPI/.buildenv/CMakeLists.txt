@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(iActions VERSION 0.6.8 LANGUAGES CXX)
+project(iActions VERSION 0.7.0 LANGUAGES CXX)
 
 # Required MinLL migration profile; apply before SDK/plugin/PCH targets.
 if(MSVC)

@@ -30,22 +30,29 @@ int Function SetDrunkFactionMembership(Actor akActor, Bool bShouldJoin)
     EndIf
     Int newRank = -2 ; set to sober at start
     If Core.DrunkFaction
-        If bShouldJoin && akActor.IsInFaction(Core.DrunkFaction)
-            ; Already drunk - add points per drink (capped at max if enabled)
-            Int currentRank = akActor.GetFactionRank(Core.DrunkFaction)
-            If Core.EnableDrunkCap
-                Int maxRank = Core.GetMaxDrunkRank()
-                newRank = Min(currentRank + Core.PointsPerDrink, maxRank)
+        If bShouldJoin
+            If akActor.IsInFaction(Core.DrunkFaction)
+                ; Already drunk - add points per drink (capped at max if enabled)
+                Int currentRank = akActor.GetFactionRank(Core.DrunkFaction)
+                If Core.EnableDrunkCap
+                    Int maxRank = Core.GetMaxDrunkRank()
+                    newRank = Min(currentRank + Core.PointsPerDrink, maxRank)
+                Else
+                    ; No cap - allow unlimited progression
+                    newRank = currentRank + Core.PointsPerDrink
+                EndIf
+                akActor.SetFactionRank(Core.DrunkFaction, newRank)
             Else
-                ; No cap - allow unlimited progression
-                newRank = currentRank + Core.PointsPerDrink
+                ; First drink - join faction at rank 0 (buzzed)
+                akActor.AddToFaction(Core.DrunkFaction)
+                akActor.SetFactionRank(Core.DrunkFaction, 0) ; Start at rank 0 (level 0 = buzzed)
             EndIf
-            akActor.SetFactionRank(Core.DrunkFaction, newRank)
-        ElseIf bShouldJoin
-            ; First drink - join faction at rank 0 (buzzed)
-            akActor.AddToFaction(Core.DrunkFaction)
-            akActor.SetFactionRank(Core.DrunkFaction, 0) ; Start at rank 0 (level 0 = buzzed)
-            Tracking.TrackDrunkMember(akActor)
+            ; Every drunk actor must be tracked, or decay, sleep sobering and uninstall cleanup never reach them.
+            ; Join first, then roll back: tracking first would let a prune drop the not-yet-joined actor.
+            If !Tracking.TrackDrunkMember(akActor)
+                akActor.RemoveFromFaction(Core.DrunkFaction)
+                LogAlert(akActor.GetDisplayName() + " stays sober: drunk NPC limit reached (" + Core.MaxDrunkMembers + ")", True)
+            EndIf
         ElseIf akActor.IsInFaction(Core.DrunkFaction)
             ; Manual sobering up
             akActor.RemoveFromFaction(Core.DrunkFaction)

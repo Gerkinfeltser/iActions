@@ -89,7 +89,15 @@ Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemRefere
         If akSourceContainer
             sourceInfo = akSourceContainer.GetDisplayName() + " (0x" + akSourceContainer.GetFormID() + ")"
         EndIf
-        Debug.Trace("[iAct DIAG] OnItemAdded: " + aiItemCount + "x " + (akBaseItem.GetName() || "Unknown") + " from " + sourceInfo + ", bIsTracking=" + bIsTracking + ", TargetNPC=" + (TargetNPC.GetDisplayName() || "None"))
+        String itemName = "Unknown"
+        If akBaseItem && akBaseItem.GetName()
+            itemName = akBaseItem.GetName()
+        EndIf
+        String targetName = "None"
+        If TargetNPC
+            targetName = TargetNPC.GetDisplayName()
+        EndIf
+        Debug.Trace("[iAct DIAG] OnItemAdded: " + aiItemCount + "x " + itemName + " from " + sourceInfo + ", bIsTracking=" + bIsTracking + ", TargetNPC=" + targetName)
     EndIf
 
     If !bIsTracking || !akSourceContainer
@@ -120,7 +128,16 @@ Event OnItemRemoved(Form akBaseItem, int aiItemCount, ObjectReference akItemRefe
         If akDestContainer
             destInfo = akDestContainer.GetDisplayName() + " (0x" + akDestContainer.GetFormID() + ")"
         EndIf
-        Debug.Trace("[iAct DIAG] OnItemRemoved: " + aiItemCount + "x " + (akBaseItem.GetName() || "Unknown") + " to " + destInfo + ", bIsTracking=" + bIsTracking + ", TargetNPC=" + (TargetNPC.GetDisplayName() || "None"))
+        ; Papyrus "a || b" yields a Bool, not the first non-empty string.
+        String itemName = "Unknown"
+        If akBaseItem && akBaseItem.GetName()
+            itemName = akBaseItem.GetName()
+        EndIf
+        String targetName = "None"
+        If TargetNPC
+            targetName = TargetNPC.GetDisplayName()
+        EndIf
+        Debug.Trace("[iAct DIAG] OnItemRemoved: " + aiItemCount + "x " + itemName + " to " + destInfo + ", bIsTracking=" + bIsTracking + ", TargetNPC=" + targetName)
     EndIf
 
     If !bIsTracking || !akDestContainer
@@ -159,6 +176,11 @@ EndEvent
 ; =========================================================
 
 Function FinishTracking()
+    ; Take this session's routing flag and clear the shared one before anything below yields.
+    ; The alcohol callback waits for seconds; clearing after it could wipe the flag of an exchange started meanwhile.
+    Bool wasAlcoholExchange = IsAlcoholExchange
+    IsAlcoholExchange = False
+
     Float finishStartTime = Utility.GetCurrentRealTime()
     LogAlert("Container menu closed, processing " + transfersTracked + " tracked transfers", False)
 
@@ -176,17 +198,13 @@ Function FinishTracking()
     iActions_Lib libScript = GetOwningQuest() as iActions_Lib
     If exchangeScript
         ; Pass alcohol flag as parameter (refactored approach)
-        exchangeScript.ProcessInventoryExchangeResults(TargetNPC, exchangeSummary, IsAlcoholExchange)
+        exchangeScript.ProcessInventoryExchangeResults(TargetNPC, exchangeSummary, wasAlcoholExchange)
     EndIf
     If libScript
         libScript.LogPerformance("FinishTracking - total_transfers=" + transfersTracked, finishStartTime)
     EndIf
 
     LogAlert("Inventory exchange tracking completed", False)
-
-    ; CRITICAL: Always reset flag after processing completes
-    ; This is a fallback reset - ensures cleanup even if processing had issues
-    IsAlcoholExchange = False
 EndFunction
 
 ; =========================================================
