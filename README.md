@@ -163,7 +163,7 @@ The bundled OAR configuration is adapted from [Drunk or drugged animations OAR](
 - **Sleep Sobering**: NPCs lose drunk points while you sleep (configurable rate, default 4 points/hour)
 - **Actions**: Drink alcohol (specific drinks by name!), request food, request alcohol, sober up, extract arrows, stumble
 - **Player Features**: Force push, optional in-game debug notifications
-- **Custom Drinks**: Add mod-added alcohol via `SKSE/Plugins/iActions/extra_alcohol.json` (Bruma, Interesting NPCs, etc.), or tag drinks with the keyword `iActions_Alcohol` using the optional [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728), e.g. `Keyword = iActions_Alcohol|Potion|Greenwood Mead,Applewatch Cider` in a `*_KID.ini`
+- **Custom Drinks**: Add mod-added alcohol via `SKSE/Plugins/iActions/extra_alcohol.json` (Bruma, Interesting NPCs, etc.), or tag drinks with the keyword `iActions_Alcohol` using the optional [Keyword Item Distributor](https://www.nexusmods.com/skyrimspecialedition/mods/55728), e.g. `Keyword = iActions_Alcohol|Potion|Greenwood Mead,Applewatch Cider` in a `*_KID.ini`. With [Object Categorization Framework](https://www.nexusmods.com/skyrimspecialedition/mods/81469), `Keyword = iActions_Alcohol|Potion|OCF_AlchDrinkAlcohol` tags every drink OCF marks as alcohol
 - **Smart Inventory**: SKSE decorators `iActions_get_npc_alcohol` and `iActions_get_alcohol_formids` for real-time alcohol detection
 - **Web Agent**: Built-in SkyrimNet web agent (`iActions Extra Alcohol Helper`) to auto-detect mod-added drinks and generate config — ready to use in the WebUI Agents area
 - **Smart Spawning**: Free-drinks mode spawns the specific drink the NPC asked for (not random)
