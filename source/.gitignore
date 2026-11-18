@@ -1,0 +1,9 @@
+build/
+out/
+vcpkg_installed/
+_deps/
+*.dll
+*.pdb
+*.lib
+*.exp
+*.obj
